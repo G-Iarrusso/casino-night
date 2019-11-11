@@ -67,12 +67,10 @@ public class roulette {
 		if (result > 0) {
 			System.out.println("You win");
 			System.out.printf("You have won $%.2f \n", amount);
-			total = (result + 1) * amount + total;
 
 		} else {
 			System.out.println("You lose");
 			System.out.printf("You have lost $%.2f \n", amount);
-			total = total - (result + 1) * (amount);
 		}
 		System.out.print("\nPlay again? (y or n)?");
 		response = keyboard.next().charAt(0);
