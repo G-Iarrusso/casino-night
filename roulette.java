@@ -64,11 +64,9 @@ public class roulette {
 
 			// print results
 			if (result > 0) {
-				System.out.println("You win");
 				System.out.printf("You have won $%.2f \n", amount);
 
 			} else {
-				System.out.println("You lose");
 				System.out.printf("You have lost $%.2f \n", amount);
 			}
 			System.out.print("\nPlay again? (y or n)?");
