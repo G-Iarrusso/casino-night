@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -23,7 +24,7 @@ public class MainMenu {
 
 	public void RunProgram() {
 
-	    final JFrame mainFrame = new JFrame("MENU");	
+	    	
     	mainFrame.setSize(900, 900);
     	mainFrame.setLocationRelativeTo(null);
     	mainFrame.setResizable(false);
@@ -43,11 +44,22 @@ public class MainMenu {
     	Setup(mainFrame);
 	}
 	
+	final JFrame mainFrame = new JFrame("MENU");
 	//Declare items for gui
 	JLabel image = new JLabel();
 	JLabel name = new JLabel("Casino Games");
 	JLabel response = new JLabel("");
 	JLabel info = new JLabel("Please enter a username");
+	JButton rec1 = new JButton("1. Gained $50 from BlackJack");
+	JButton rec2 = new JButton("2. ");
+	JButton rec3 = new JButton("3. ");
+	JButton rec4 = new JButton("4. ");
+	JButton rec5 = new JButton("5. ");
+	JButton rec6 = new JButton("6. ");
+	JButton rec7 = new JButton("7. ");
+	JButton rec8 = new JButton("8. ");
+	JButton rec9 = new JButton("9. ");
+	JButton rec10 = new JButton("10. ");
 	JButton button1 = new JButton("New User");
 	JButton button2 = new JButton("Returning User");
 	JButton button3 = new JButton("Enter");
@@ -62,7 +74,6 @@ public class MainMenu {
 	JButton craps = new JButton("Craps");
 	JTextField text = new JTextField(10);
 	Player puser;
-	
 	Color c = Color.magenta;
 	
 	
@@ -70,11 +81,15 @@ public class MainMenu {
 	boolean newUser = false;
 	boolean sameName = false;
 	boolean error = false;
+	boolean back1 = true;
+	boolean back2 = false;
 	final static int START_MONEY = 1000;
 	String line;
 	String[] user;
 	File file = new File("user_data.txt");
 	File file1 = new File("Other_Images");
+	File file2 = new File("user_records.txt");
+	ArrayList<String> pRecords = new ArrayList<String>();
 	
 	public void Setup(JFrame mainFrame) {
 		
@@ -90,12 +105,36 @@ public class MainMenu {
 		quit.setBounds(300, 450, 300, 100);
 		button3.setBounds(0, 600, 300, 100);
 		text.setBounds(300, 600, 300, 100);
+		
 		text.setFont(new Font("Serif", Font.PLAIN, 40));
 		response.setFont(new Font("Serif", Font.PLAIN, 30));
-		response.setBounds(50, 150, 800, 100);
+		response.setBounds(50, 160, 800, 100);
 		info.setFont(new Font("Serif", Font.PLAIN, 20));
+		rec1.setFont(new Font("Serif", Font.PLAIN, 20));
+		rec2.setFont(new Font("Serif", Font.PLAIN, 20));
+		rec3.setFont(new Font("Serif", Font.PLAIN, 20));
+		rec4.setFont(new Font("Serif", Font.PLAIN, 20));
+		rec5.setFont(new Font("Serif", Font.PLAIN, 20));
+		rec6.setFont(new Font("Serif", Font.PLAIN, 20));
+		rec7.setFont(new Font("Serif", Font.PLAIN, 20));
+		rec8.setFont(new Font("Serif", Font.PLAIN, 20));
+		rec9.setFont(new Font("Serif", Font.PLAIN, 20));
+		rec10.setFont(new Font("Serif", Font.PLAIN, 20));
+		
 		info.setHorizontalAlignment(JLabel.CENTER);
 		response.setHorizontalAlignment(JLabel.CENTER);
+		rec1.setHorizontalAlignment(JTextField.LEFT);
+		rec2.setHorizontalAlignment(JTextField.LEFT);
+		rec3.setHorizontalAlignment(JTextField.LEFT);
+		rec4.setHorizontalAlignment(JTextField.LEFT);
+		rec5.setHorizontalAlignment(JTextField.LEFT);
+		rec6.setHorizontalAlignment(JTextField.LEFT);
+		rec7.setHorizontalAlignment(JTextField.LEFT);
+		rec8.setHorizontalAlignment(JTextField.LEFT);
+		rec9.setHorizontalAlignment(JTextField.LEFT);
+		rec10.setHorizontalAlignment(JTextField.LEFT);
+		
+		
 		info.setBounds(200, 550, 500, 50);
 		back.setBounds(800, 00, 100, 50);
 		games.setBounds(300, 250, 300, 100);
@@ -105,10 +144,52 @@ public class MainMenu {
 		roulette.setBounds(500, 300, 300, 200);
 		slots.setBounds(100, 600, 300, 200);
 		craps.setBounds(500, 600, 300, 200);
+		rec1.setBounds(25, 300, 400, 50);
+		rec2.setBounds(25, 400, 400, 50);
+		rec3.setBounds(25, 500, 400, 50);
+		rec4.setBounds(25, 600, 400, 50);
+		rec5.setBounds(25, 700, 400, 50);
+		rec6.setBounds(460, 300, 400, 50);
+		rec7.setBounds(460, 400, 400, 50);
+		rec8.setBounds(460, 500, 400, 50);
+		rec9.setBounds(460, 600, 400, 50);
+		rec10.setBounds(460, 700, 400, 50);
+		
 		
 		name.setForeground(Color.ORANGE);
 		info.setForeground(Color.white);
 		response.setForeground(Color.white);
+		rec1.setForeground(Color.white);
+		rec1.setBackground(Color.black);
+		rec2.setForeground(Color.white);
+		rec2.setBackground(Color.black);
+		rec3.setForeground(Color.white);
+		rec3.setBackground(Color.black);
+		rec4.setForeground(Color.white);
+		rec4.setBackground(Color.black);
+		rec5.setForeground(Color.white);
+		rec5.setBackground(Color.black);
+		rec6.setForeground(Color.white);
+		rec6.setBackground(Color.black);
+		rec7.setForeground(Color.white);
+		rec7.setBackground(Color.black);
+		rec8.setForeground(Color.white);
+		rec8.setBackground(Color.black);
+		rec9.setForeground(Color.white);
+		rec9.setBackground(Color.black);
+		rec10.setForeground(Color.white);
+		rec10.setBackground(Color.black);
+		
+		rec1.setEnabled(false);
+		rec2.setEnabled(false);
+		rec3.setEnabled(false);
+		rec4.setEnabled(false);
+		rec5.setEnabled(false);
+		rec6.setEnabled(false);
+		rec7.setEnabled(false);
+		rec8.setEnabled(false);
+		rec9.setEnabled(false);
+		rec10.setEnabled(false);
 		
 		button1.setBackground(c);
 		button1.setFont(new Font("Serif", Font.BOLD, 30));
@@ -127,7 +208,6 @@ public class MainMenu {
 		button3.setBackground(c);
 		button3.setFont(new Font("Serif", Font.BOLD, 30));
 		
-		
 		//Add items to Jpanel
 		panel.add(name);
 		panel.add(button1);
@@ -145,6 +225,16 @@ public class MainMenu {
 		panel.add(roulette);
 		panel.add(slots);
 		panel.add(craps);
+		panel.add(rec1);
+		panel.add(rec2);
+		panel.add(rec3);
+		panel.add(rec4);
+		panel.add(rec5);
+		panel.add(rec6);
+		panel.add(rec7);
+		panel.add(rec8);
+		panel.add(rec9);
+		panel.add(rec10);
 		
 		button3.setVisible(false);
 		text.setVisible(false);
@@ -158,6 +248,16 @@ public class MainMenu {
 		roulette.setVisible(false);
 		slots.setVisible(false);
 		craps.setVisible(false);
+		rec1.setVisible(false);
+		rec2.setVisible(false);
+		rec3.setVisible(false);
+		rec4.setVisible(false);
+		rec5.setVisible(false);
+		rec6.setVisible(false);
+		rec7.setVisible(false);
+		rec8.setVisible(false);
+		rec9.setVisible(false);
+		rec10.setVisible(false);
 		
 		panel.setVisible(true);
 		
@@ -173,6 +273,7 @@ public class MainMenu {
 		logOut.addActionListener(new goLogOut());
 		games.addActionListener(new goGames());
 		blackjack.addActionListener(new Blackjack());
+		records.addActionListener(new gamesRecords());
 	}
 	
 	private class openUsername1 implements ActionListener {
@@ -196,20 +297,116 @@ public class MainMenu {
 		}
 	}
 	
+	private class gamesRecords implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			games.setVisible(false);
+			records.setVisible(false);
+			logOut.setVisible(false);
+			quit.setVisible(false);
+			back.setVisible(true);
+			response.setVisible(false);
+			
+			try {
+				BufferedReader r1 = new BufferedReader(new FileReader(file2));
+				
+				while (true) {
+					String line = r1.readLine();
+					if (line == null) {
+						r1.close();
+						break;
+					}
+					pRecords.add(line);
+				}
+				
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			int num = pRecords.size() - 1, cnt = 0;
+			while (cnt < 10) {
+				if (cnt == 0)
+					rec1.setText("1. " + pRecords.get(num));
+				else if (cnt == 1)
+					rec2.setText("2. " + pRecords.get(num));
+				else if (cnt == 2)
+					rec3.setText("3. " + pRecords.get(num));
+				else if (cnt == 3)
+					rec4.setText("4. " + pRecords.get(num));
+				else if (cnt == 4)
+					rec5.setText("5. " + pRecords.get(num));
+				else if (cnt == 5)
+					rec6.setText("6. " + pRecords.get(num));
+				else if (cnt == 6)
+					rec7.setText("7. " + pRecords.get(num));
+				else if (cnt == 7)
+					rec8.setText("8. " + pRecords.get(num));
+				else if (cnt == 8)
+					rec9.setText("9. " + pRecords.get(num));
+				else if (cnt == 9)
+					rec10.setText("10. " + pRecords.get(num));
+				cnt++;
+				num--;
+			}
+			
+			
+			rec1.setVisible(true);
+			rec2.setVisible(true);
+			rec3.setVisible(true);
+			rec4.setVisible(true);
+			rec5.setVisible(true);
+			rec6.setVisible(true);
+			rec7.setVisible(true);
+			rec8.setVisible(true);
+			rec9.setVisible(true);
+			rec10.setVisible(true);
+		}
+	}
+	
 	private class goBack implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			button3.setVisible(false);
-			text.setVisible(false);
-			info.setVisible(false);
-			back.setVisible(false);
-			
-			
-			button1.setEnabled(true);
-			button2.setEnabled(true);
-			quit.setEnabled(true);
+			if (back1 && !back2) {
+				button3.setVisible(false);
+				text.setVisible(false);
+				info.setVisible(false);
+				back.setVisible(false);
+				
+				button1.setEnabled(true);
+				button2.setEnabled(true);
+				quit.setEnabled(true);
+			}
+			else {
+				games.setVisible(true);
+				records.setVisible(true);
+				logOut.setVisible(true);
+				quit.setVisible(true);
+				response.setVisible(true);
+				name.setVisible(true);
+				back.setVisible(false);
+				blackjack.setVisible(false);
+				roulette.setVisible(false);
+				slots.setVisible(false);
+				craps.setVisible(false);
+				rec1.setVisible(false);
+				rec2.setVisible(false);
+				rec3.setVisible(false);
+				rec4.setVisible(false);
+				rec5.setVisible(false);
+				rec6.setVisible(false);
+				rec7.setVisible(false);
+				rec8.setVisible(false);
+				rec9.setVisible(false);
+				rec10.setVisible(false);
+				
+			}
 		}
 	}
 	
@@ -232,6 +429,8 @@ public class MainMenu {
 			logOut.setVisible(false);
 			response.setText("Sucessfully logged out");
 	    	response.setVisible(true);
+	    	back1 = true;
+	    	back2 = false;
 		}
 	}
 	
@@ -257,6 +456,7 @@ public class MainMenu {
 			roulette.setVisible(true);
 			slots.setVisible(true);
 			craps.setVisible(true);
+			back.setVisible(true);
 		}
 	}
 	
@@ -266,7 +466,8 @@ public class MainMenu {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			BlackJackMain bj = new BlackJackMain();
-			bj.Startup(puser);
+			bj.Startup(puser, mainFrame);
+			mainFrame.setVisible(false);
 		}
 	}
 	
@@ -360,6 +561,8 @@ public class MainMenu {
 						back.setVisible(false);
 						logOut.setVisible(true);
 						text.setText("");
+						back1 = false;
+						back2 = true;
 					}
 					sameName = false;
 			    }
@@ -389,6 +592,8 @@ public class MainMenu {
 							back.setVisible(false);
 							logOut.setVisible(true);
 							text.setText("");
+							back1 = false;
+							back2 = true;
 					    }
 					    //Otherwise reset
 					    else {

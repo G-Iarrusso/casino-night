@@ -14,10 +14,6 @@ public class BlackJackConfig {
 	private ArrayList<Card> dealer = new ArrayList<Card>();
 	private ArrayList<Card> cpu1 = new ArrayList<Card>();
 	private ArrayList<Card> cpu2 = new ArrayList<Card>();
-	private int numPlayerCards = 0;
-	private int numDealerCards = 0;
-	private int numCpu1Cards = 0;
-	private int numCpu2Cards = 0;
 	private int playerTotal = 0;
 	private int dealerTotal = 0;
 	private int cpu1Total = 0;
@@ -42,54 +38,70 @@ public class BlackJackConfig {
 	}
 
 	
-	public int getCard() {
+	public int getCard(String s) {
 		Card card = deck.getRandomCard();
-		player.add(card);
 		
-		if (this.checkForAce(card)) {
-			if (playerTotal + card.getValue() > 21) {
-				this.deck.getSetAceValue(card);
+		if (s.equals("player")) {
+			player.add(card);
+			
+			if (this.checkForAce(card)) {
+				if (playerTotal + card.getValue() > 21) {
+					this.deck.getSetAceValue(card);
+				}
 			}
+			
+			
+			playerTotal += card.getValue();
 		}
-		
-		playerTotal += card.getValue();
+		else if (s.equals("cpu1")) {
+			cpu1.add(card);
+			if (this.checkForAce(card)) {
+				if (cpu1Total + card.getValue() > 21) {
+					this.deck.getSetAceValue(card);
+				}
+			}
+			
+			cpu1Total += card.getValue();
+		}
+		else if (s.equals("cpu2")) {
+			cpu2.add(card);
+			
+			if (this.checkForAce(card)) {
+				if (cpu2Total + card.getValue() > 21) {
+					this.deck.getSetAceValue(card);
+				}
+			}
+			
+			cpu2Total += card.getValue();
+
+		}
+		else {
+			dealer.add(card);
+			
+			if (this.checkForAce(card)) {
+				if (dealerTotal + card.getValue() > 21) {
+					this.deck.getSetAceValue(card);
+				}
+			}
+			
+			dealerTotal += card.getValue();
+		}
 		
 		return card.getNum();
 	}
 	
 	public int getValue(String s) {
-		int i = 0;
 		
 		if (s.compareTo("player") == 0) {
-			int n = player.size();
-			playerTotal = 0;
-			for (i = 0; i < n; i++) {
-				playerTotal += player.get(i).getValue();
-			}
 			return playerTotal;
 		}
 		else if (s.compareTo("dealer") == 0) {
-			int n = dealer.size();
-			dealerTotal = 0;
-			for (i = 0; i < n; i++) {
-				dealerTotal += dealer.get(i).getValue();
-			}
 			return dealerTotal;
 		}
 		else if (s.compareTo("cpu1") == 0) {
-			int n = player.size();
-			cpu1Total = 0;
-			for (i = 0; i < n; i++) {
-				cpu1Total += cpu1.get(i).getValue();
-			}
 			return cpu1Total;
 		}
 		else if (s.compareTo("cpu2") == 0) {
-			int n = player.size();
-			cpu2Total = 0;
-			for (i = 0; i < n; i++) {
-				cpu2Total += cpu2.get(i).getValue();
-			}
 			return cpu2Total;
 		}
 		return 0;
@@ -112,5 +124,39 @@ public class BlackJackConfig {
 			return false;
 		}
 	}
+	
+	public boolean checkBlackjack() {
+		if (player.size() > 2) {
+			return false;
+		}
+		else if ((checkForAce(player.get(0)) && checkForJack(player.get(1))) || (checkForJack(player.get(0)) && checkForAce(player.get(1)))){
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public void clearHand() {
+		player.clear();
+		dealer.clear();
+		cpu1.clear();
+		cpu2.clear();
+		
+		playerTotal = 0;
+		dealerTotal = 0;
+		cpu1Total = 0;
+		cpu2Total = 0;
+	}
+	
+	public void checkNewDeck() {
+		
+		if (deck.getNumRemainingCards() < 27) {
+			deck = new Deck(DECKS);
+		}
+		
+	}
+	
+	
+	
 	
 }
