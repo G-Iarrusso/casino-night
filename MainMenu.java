@@ -21,18 +21,15 @@ public class MainMenu {
 	}
 	
 	//Initial setup of gui
-
 	public void RunProgram() {
-
-	    	
+		//Create the GUI
     	mainFrame.setSize(900, 900);
     	mainFrame.setLocationRelativeTo(null);
     	mainFrame.setResizable(false);
     	mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     	mainFrame.setVisible(true);
     	
-    	//Creates the background
-    	
+    	//Creates the background Image
     	ImageIcon icon = new ImageIcon("Other_Images/Casino.jpg");
     	Image iconTemp = icon.getImage().getScaledInstance(900, 900, Image.SCALE_DEFAULT);
     	ImageIcon background = new ImageIcon(iconTemp);
@@ -83,13 +80,16 @@ public class MainMenu {
 	boolean error = false;
 	boolean back1 = true;
 	boolean back2 = false;
+	boolean loggedIn = false;
+	int cnt = 0;
+	int numRecords = 0;
 	final static int START_MONEY = 1000;
 	String line;
+	String rLine;
 	String[] user;
 	File file = new File("user_data.txt");
 	File file1 = new File("Other_Images");
 	File file2 = new File("user_records.txt");
-	ArrayList<String> pRecords = new ArrayList<String>();
 	
 	public void Setup(JFrame mainFrame) {
 		
@@ -106,6 +106,7 @@ public class MainMenu {
 		button3.setBounds(0, 600, 300, 100);
 		text.setBounds(300, 600, 300, 100);
 		
+		//Set the font of labels and buttons
 		text.setFont(new Font("Serif", Font.PLAIN, 40));
 		response.setFont(new Font("Serif", Font.PLAIN, 30));
 		response.setBounds(50, 160, 800, 100);
@@ -121,6 +122,7 @@ public class MainMenu {
 		rec9.setFont(new Font("Serif", Font.PLAIN, 20));
 		rec10.setFont(new Font("Serif", Font.PLAIN, 20));
 		
+		//Set the alignment of labels and buttons
 		info.setHorizontalAlignment(JLabel.CENTER);
 		response.setHorizontalAlignment(JLabel.CENTER);
 		rec1.setHorizontalAlignment(JTextField.LEFT);
@@ -134,7 +136,7 @@ public class MainMenu {
 		rec9.setHorizontalAlignment(JTextField.LEFT);
 		rec10.setHorizontalAlignment(JTextField.LEFT);
 		
-		
+		//Choose where everything goes on the gui (X, Y, SIZE X, SIZE Y)
 		info.setBounds(200, 550, 500, 50);
 		back.setBounds(800, 00, 100, 50);
 		games.setBounds(300, 250, 300, 100);
@@ -155,7 +157,7 @@ public class MainMenu {
 		rec9.setBounds(460, 600, 400, 50);
 		rec10.setBounds(460, 700, 400, 50);
 		
-		
+		//Change the colour of the text in the button and the background of the button
 		name.setForeground(Color.ORANGE);
 		info.setForeground(Color.white);
 		response.setForeground(Color.white);
@@ -180,6 +182,7 @@ public class MainMenu {
 		rec10.setForeground(Color.white);
 		rec10.setBackground(Color.black);
 		
+		//Make sure the user can't use the buttons for the records
 		rec1.setEnabled(false);
 		rec2.setEnabled(false);
 		rec3.setEnabled(false);
@@ -191,6 +194,7 @@ public class MainMenu {
 		rec9.setEnabled(false);
 		rec10.setEnabled(false);
 		
+		//Set backgrounds of buttons and format the text 
 		button1.setBackground(c);
 		button1.setFont(new Font("Serif", Font.BOLD, 30));
 		button2.setBackground(c);
@@ -236,6 +240,7 @@ public class MainMenu {
 		panel.add(rec9);
 		panel.add(rec10);
 		
+		//Set the visiblitly of items to not be seen
 		button3.setVisible(false);
 		text.setVisible(false);
 		response.setVisible(false);
@@ -259,12 +264,15 @@ public class MainMenu {
 		rec9.setVisible(false);
 		rec10.setVisible(false);
 		
+		//Make the panel visible
 		panel.setVisible(true);
 		
+		//Add the panel to the gui
 		panel.setOpaque(false);
 		mainFrame.add(panel);
 		mainFrame.setVisible(true);
 		
+		//Create action listeners for the buttons
 		button1.addActionListener(new openUsername1());
 		button2.addActionListener(new openUsername2());
 		button3.addActionListener(new enterUsername());
@@ -273,7 +281,27 @@ public class MainMenu {
 		logOut.addActionListener(new goLogOut());
 		games.addActionListener(new goGames());
 		blackjack.addActionListener(new Blackjack());
+		roulette.addActionListener(new Roulette());
 		records.addActionListener(new gamesRecords());
+	}
+	
+	private void updateMoney(Player pUpdate) {
+		//Creates a thread to update the players money every 5 seconds
+				Thread t = new Thread() {
+					//Start the thread
+					public void run() {
+						while (loggedIn) {
+							try {
+								Thread.sleep(5000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							response.setText("Hello " + pUpdate.getID() + ", you have $" + pUpdate.getMoney());
+						}
+					}
+				};
+				t.start();
 	}
 	
 	private class openUsername1 implements ActionListener {
@@ -281,6 +309,7 @@ public class MainMenu {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			
 			button3.setVisible(true);
 			text.setVisible(true);
 			info.setVisible(true);
@@ -301,6 +330,8 @@ public class MainMenu {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			//Set the text of the records to that of the file
 			// TODO Auto-generated method stub
 			games.setVisible(false);
 			records.setVisible(false);
@@ -311,14 +342,29 @@ public class MainMenu {
 			
 			try {
 				BufferedReader r1 = new BufferedReader(new FileReader(file2));
-				
-				while (true) {
-					String line = r1.readLine();
-					if (line == null) {
-						r1.close();
-						break;
-					}
-					pRecords.add(line);
+				cnt = 0;
+				while ((rLine = r1.readLine()) != null) {
+					if (cnt == 0)
+						rec1.setText("1. " + rLine);
+					else if (cnt == 1)
+						rec2.setText("2. " + rLine);
+					else if (cnt == 2)
+						rec3.setText("3. " + rLine);
+					else if (cnt == 3)
+						rec4.setText("4. " + rLine);
+					else if (cnt == 4)
+						rec5.setText("5. " + rLine);
+					else if (cnt == 5)
+						rec6.setText("6. " + rLine);
+					else if (cnt == 6)
+						rec7.setText("7. " + rLine);
+					else if (cnt == 7)
+						rec8.setText("8. " + rLine);
+					else if (cnt == 8)
+						rec9.setText("9. " + rLine);
+					else if (cnt == 9)
+						rec10.setText("10. " + rLine);
+					cnt++;
 				}
 				
 			} catch (FileNotFoundException e1) {
@@ -327,34 +373,9 @@ public class MainMenu {
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
-			int num = pRecords.size() - 1, cnt = 0;
-			while (cnt < 10) {
-				if (cnt == 0)
-					rec1.setText("1. " + pRecords.get(num));
-				else if (cnt == 1)
-					rec2.setText("2. " + pRecords.get(num));
-				else if (cnt == 2)
-					rec3.setText("3. " + pRecords.get(num));
-				else if (cnt == 3)
-					rec4.setText("4. " + pRecords.get(num));
-				else if (cnt == 4)
-					rec5.setText("5. " + pRecords.get(num));
-				else if (cnt == 5)
-					rec6.setText("6. " + pRecords.get(num));
-				else if (cnt == 6)
-					rec7.setText("7. " + pRecords.get(num));
-				else if (cnt == 7)
-					rec8.setText("8. " + pRecords.get(num));
-				else if (cnt == 8)
-					rec9.setText("9. " + pRecords.get(num));
-				else if (cnt == 9)
-					rec10.setText("10. " + pRecords.get(num));
-				cnt++;
-				num--;
-			}
+			} 
 			
-			
+			puser.updateFileNum(cnt);
 			rec1.setVisible(true);
 			rec2.setVisible(true);
 			rec3.setVisible(true);
@@ -427,10 +448,11 @@ public class MainMenu {
 			records.setVisible(false);
 			back.setVisible(false);
 			logOut.setVisible(false);
-			response.setText("Sucessfully logged out");
-	    	response.setVisible(true);
 	    	back1 = true;
 	    	back2 = false;
+	    	loggedIn = false;
+	    	response.setText("Sucessfully logged out");
+	    	response.setVisible(true);
 		}
 	}
 	
@@ -439,6 +461,7 @@ public class MainMenu {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			loggedIn = false;
 			System.exit(0);
 		}
 	}
@@ -465,9 +488,37 @@ public class MainMenu {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			numRecords = puser.getFileNum();
 			BlackJackMain bj = new BlackJackMain();
-			bj.Startup(puser, mainFrame);
+			bj.Startup(puser, mainFrame, numRecords);
 			mainFrame.setVisible(false);
+		}
+	}
+	
+	private class Roulette implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			numRecords = puser.getFileNum();
+		}
+	}
+	
+	private class Craps implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			numRecords = puser.getFileNum();
+		}
+	}
+	
+	private class Slots implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			numRecords = puser.getFileNum();
 		}
 	}
 	
@@ -563,6 +614,8 @@ public class MainMenu {
 						text.setText("");
 						back1 = false;
 						back2 = true;
+						loggedIn = true;
+						updateMoney(puser);
 					}
 					sameName = false;
 			    }
@@ -594,6 +647,8 @@ public class MainMenu {
 							text.setText("");
 							back1 = false;
 							back2 = true;
+							loggedIn = true;
+							updateMoney(puser);
 					    }
 					    //Otherwise reset
 					    else {

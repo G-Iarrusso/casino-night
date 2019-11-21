@@ -6,8 +6,13 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +26,7 @@ public class BlackJackMain {
 		BlackJackMain b = new BlackJackMain();
 		Player p = new Player("Matt", 10);
 		JFrame n = new JFrame();
-		b.Startup(p, n);
+		b.Startup(p, n, 10);
 	}
 	
 	//Create labels
@@ -110,6 +115,7 @@ public class BlackJackMain {
 	boolean reset = false;
 	boolean didBet = false;
 	File file = new File("user_records.txt");
+	//File tempFile = new File(file.getAbsolutePath() + ".tmp");
 	ImageIcon faceDownCard = config.getCardImage(52);
 	ImageIcon cardIcon;
 	File f = new File("Card_Images");
@@ -118,9 +124,12 @@ public class BlackJackMain {
 	PrintWriter pw;
 	Bet betting = new Bet();
 	Player plyr;
+	int numRecords;
 	
-	public void Startup(Player p, JFrame mainFrame) {
+	public void Startup(Player p, JFrame mainFrame, int num) {
 		
+		//Create the GUI
+		numRecords = num;
 		frame.setSize(1400, 900);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
@@ -128,6 +137,8 @@ public class BlackJackMain {
 		menuFrame = mainFrame;
 		plyr = p;
 		
+		
+		//Set the background
 		ImageIcon icon = new ImageIcon("Other_Images/blackjack.jpg");
     	Image iconTemp = icon.getImage().getScaledInstance(1400, 900, Image.SCALE_DEFAULT);
     	ImageIcon background = new ImageIcon(iconTemp);
@@ -136,11 +147,14 @@ public class BlackJackMain {
     	contentPane.setLayout( new BorderLayout() );
     	frame.setContentPane(contentPane);
 		
+    	//Create the place where buttons and stuff go
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		
+		//Get amount of player money and set it to label
 		player.setText("Player: " + p.getMoney());
 		
+		//Set the font of stuff
 		bet.setFont(new Font("Serif", Font.PLAIN, 30));
 		player.setFont(new Font("Serif", Font.BOLD, 20));
 		dealer.setFont(new Font("Serif", Font.BOLD, 20));
@@ -155,11 +169,13 @@ public class BlackJackMain {
 		message.setFont(new Font("Serif", Font.BOLD, 35));
 		winLoss.setFont(new Font("Serif", Font.BOLD, 20));
 		
+		//Make sure text is aligned in the center
 		input.setHorizontalAlignment(JTextField.CENTER);
 		bet.setHorizontalAlignment(JTextField.CENTER);
 		message.setHorizontalAlignment(JTextField.CENTER);
 		input.setText("$1");
 		
+		//Set the text color
 		dealer.setForeground(Color.gray);
 		endGame.setBackground(Color.gray);
 		rules.setBackground(Color.gray);
@@ -167,6 +183,7 @@ public class BlackJackMain {
 		cpu2Value.setForeground(Color.white);
 		dealerValue.setForeground(Color.white);
 		
+		//Set where everything will be placed on the gui (It goes X, Y, Size X, Size Y)
 		playerValue.setBounds(660, 575, 100, 50);
 		cpu1Value.setBounds(1200, 550, 100, 100);
 		cpu2Value.setBounds(130, 550, 100, 100);
@@ -230,7 +247,7 @@ public class BlackJackMain {
 		dealerCard10.setBounds(360, 35, 125, 175);
 		message.setBounds(400, 265, 600, 100);
 		
-		
+		//Add everything to the panel to make things visible
 		panel.add(message);
 		panel.add(back);
 		panel.add(rules);
@@ -292,7 +309,7 @@ public class BlackJackMain {
 		panel.add(cpu2Value);
 		panel.add(dealerValue);
 		
-		
+		//Make sure the cards cant be interacted with
 		playerCard1.setEnabled(false);
 		playerCard2.setEnabled(false);
 		playerCard3.setEnabled(false);
@@ -334,7 +351,7 @@ public class BlackJackMain {
 		dealerCard9.setEnabled(false);
 		dealerCard10.setEnabled(false);
 		
-		
+		//Set extra cards to be invisible at the start
 		playerCard3.setVisible(false);
 		playerCard4.setVisible(false);
 		playerCard5.setVisible(false);
@@ -375,18 +392,20 @@ public class BlackJackMain {
 		playerValue.setVisible(true);
 		input.setEditable(false);
 
+		//Starts the game
 		startCode();
 		
-		
+		//Set the background to work and have everything placed onto the gui
 		panel.setOpaque(false);
 		panel.setVisible(true);
 		frame.add(panel);
 		frame.setVisible(true);
-		
+		//Call button actions
 		Listeners();
 	}
 	
 	public void Listeners() {
+		//Create button actions
 		endGame.addActionListener(new goBack());
 		enter.addActionListener(new setBet());
 		hit.addActionListener(new addCard());
@@ -395,17 +414,69 @@ public class BlackJackMain {
 		stay.addActionListener(new endTurn());
 	}
 	
+	public static void removeLineFromFile(String file) {
+		//This function deltes the first line of a file by copying the contents of the original file except for the first line
+		// and then pasting it to a new file. The old file is delted and the new one is renamed the same as the old one.
+		int c = 0;
+	    try {
+
+	      File inFile = new File(file);
+
+	      if (!inFile.isFile()) {
+	        System.out.println("Parameter is not an existing file");
+	        return;
+	      }
+
+	      //Construct the new file that will later be renamed to the original filename.
+	      File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
+
+	      BufferedReader br = new BufferedReader(new FileReader(file));
+	      PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+
+	      String line = null;
+
+	      //Read from the original file and write to the new
+	      //unless content matches data to be removed.
+	      while ((line = br.readLine()) != null) {
+
+	        if (c != 0) {
+	        	pw.println(line);
+	            pw.flush();
+	            c++;
+	          }
+	        c++;
+	        }
+	        pw.close();
+	        br.close();
+
+	        //Delete the original file
+	        if (!inFile.delete()) {
+	          System.out.println("Could not delete file");
+	          return;
+	        }
+
+	        //Rename the new file to the filename the original file had.
+	        if (!tempFile.renameTo(inFile))
+	          System.out.println("Could not rename file");
+
+	      }
+	      catch (FileNotFoundException ex) {
+	        ex.printStackTrace();
+	      }
+	      catch (IOException ex) {
+	        ex.printStackTrace();
+	      }
+	}
+	
 	public void startCode() {
+		//Creates a thread so the game is continuous
 		Thread t = new Thread() {
-			
+			//Start the thread
 			public void run() {
 				
-				
+				//While the user does not exit the game
 				while (!done) {
-					
-						ticks++;
-						timer.setText("" + ticks);
-						
+						//At the start of the hand set the cards so that they are face down until a bet is placed
 						while (start) {
 							playerCard1.setIcon(faceDownCard);
 							playerCard1.setDisabledIcon(faceDownCard);
@@ -432,7 +503,8 @@ public class BlackJackMain {
 							cpu2Card2.setBounds(70, 650, 125, 175);
 							dealerCard1.setBounds(630, 35, 125, 175);
 							dealerCard2.setBounds(600, 35, 125, 175);
-	
+							
+							//Once the bet is made, flip dealers card and the players cards
 							if (didBet) {
 								cardNum = config.getCard("dealer");
 								cardIcon = config.getCardImage(cardNum);
@@ -459,6 +531,7 @@ public class BlackJackMain {
 							
 						}
 						
+						//Start the cpu's turn. The cpu will flip cards until they have a card value greater than 16
 						while (cpu1Num < 17) {
 							
 							if (cpu1Init == false) {
@@ -656,6 +729,7 @@ public class BlackJackMain {
 							}
 						}
 						
+						//Get players actions
 						//============================================
 						if (!playerDone) {
 							bet.setVisible(true);
@@ -676,7 +750,7 @@ public class BlackJackMain {
 						
 	
 						//============================================
-						
+						//Start the cpu's turn. The cpu will flip cards until they have a card value greater than 16
 						while (cpu2Num < 17 && playerDone) {
 							
 							if (cpu2Init == false) {
@@ -907,7 +981,7 @@ public class BlackJackMain {
 								}
 							}
 						}
-						
+						//Start the dealers turn. The dealer will flip cards until they have a card value greater than 16
 						while (dealerNum < 17 && playerDone) {
 							if (dealerInit == false) {
 								cardNum = config.getCard("dealer");
@@ -1124,12 +1198,14 @@ public class BlackJackMain {
 						}
 					
 						
-						
+						//This checks to see the result of the hand
+						//It will display a message to the user, write the result to a file and dish out the appropriate amount of money to the player
 						while (dealerNum >= 17 && playerDone && !reset) {
 							val1 = config.getValue("player");
 
 							try {
 								pw = new PrintWriter(new FileOutputStream(file, true));
+								
 							//BLACKJACK
 							if (config.checkBlackjack() && dealerNum != 21) {
 								plyr.changeMoney(betting.getBet() * 3);
@@ -1155,7 +1231,6 @@ public class BlackJackMain {
 								winLoss.setText("- " + betting.getBet());
 								pw.write("Lost " + betting.getBet() + " playing BlackJack\n");
 								winLoss.setForeground(Color.RED);
-								System.out.println("4. Player: " + val1 + "\nDealer: " + dealerNum + "\n");
 							}
 							//DEALER BUSTS
 							else if (val1 <= 21 && dealerNum > 21) {
@@ -1192,16 +1267,23 @@ public class BlackJackMain {
 								winLoss.setForeground(Color.GREEN);
 								message.setText("You beat the Dealer");
 							}
+							numRecords++;
 							winLoss.setVisible(true);
 							message.setVisible(true);
-							reset = true;
 							pw.close();
+							if (numRecords > 10) {
+								removeLineFromFile("user_records.txt");
+							}
+							
+							reset = true;
+							
 							}
 							catch (Exception e1) {
 								System.out.println("FILE IO ERROR IN BLACKJACK");
 							}
 						}
 						
+						//After a hand is done, this will reset everything in the gui and start again
 						while (reset)  {
 							try {
 								Thread.sleep(3000);
@@ -1269,6 +1351,7 @@ public class BlackJackMain {
 							cpu2Init = false;
 							dealerInit = false;
 							
+							//If the user has no money end the game
 							if (plyr.getMoney() == 0) {
 								done = true;
 								menuFrame.setVisible(true);
@@ -1288,6 +1371,7 @@ public class BlackJackMain {
 private class endTurn implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
+		//Ends the players turn
 		playerDone = true;
 		hit.setVisible(false);
 		stay.setVisible(false);
@@ -1302,7 +1386,7 @@ private class setBet implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			
+			//Set the users bet and continue the thread
 			playerCard1.setVisible(true);
 			playerCard2.setVisible(true);
 			enter.setVisible(false);
@@ -1321,7 +1405,7 @@ private class setBet implements ActionListener {
 	}
 
 	private class addCard implements ActionListener {
-		
+		//Adds players cards if the user selects hit
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!playerCard3.isVisible()) {
@@ -1428,14 +1512,17 @@ private class setBet implements ActionListener {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//Ends the game and returns to the main menu
 			done = true;
 			menuFrame.setVisible(true);
+			plyr.updateFileNum(numRecords);
 			frame.dispose();
 		}
 	}
 	
 	private class raiseBet implements ActionListener {
-			
+		
+		//Raises the users bet
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (plyr.getMoney() >= betting.getNextBet()) {
@@ -1449,7 +1536,7 @@ private class setBet implements ActionListener {
 	}
 	
 	private class lowerBet implements ActionListener {
-		
+		//Lowers the users bet
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			betting.lowerBet();
