@@ -139,7 +139,7 @@ public class BlackJackMain {
 		
 		
 		//Set the background
-		ImageIcon icon = new ImageIcon("Other_Images/blackjack.jpg");
+		ImageIcon icon = new ImageIcon("Blackjack_Images/blackjack.jpg");
     	Image iconTemp = icon.getImage().getScaledInstance(1400, 900, Image.SCALE_DEFAULT);
     	ImageIcon background = new ImageIcon(iconTemp);
     	JLabel contentPane = new JLabel();
@@ -173,7 +173,7 @@ public class BlackJackMain {
 		input.setHorizontalAlignment(JTextField.CENTER);
 		bet.setHorizontalAlignment(JTextField.CENTER);
 		message.setHorizontalAlignment(JTextField.CENTER);
-		input.setText("$1");
+		input.setText("$5");
 		
 		//Set the text color
 		dealer.setForeground(Color.gray);
@@ -190,7 +190,7 @@ public class BlackJackMain {
 		dealerValue.setBounds(660, 200, 100, 100);
 		timer.setBounds(700, 300, 100, 100);
 		back.setBounds(100, 100, 200, 300);
-		rules.setBounds(1185, 0, 200, 100);
+		rules.setBounds(1200, 0, 200, 100);
 		endGame.setBounds(0, 0, 200, 100);
 		bet.setBounds(500, 350, 400, 100);
 		input.setBounds(650, 425, 125, 50);
@@ -412,6 +412,7 @@ public class BlackJackMain {
 		up.addActionListener(new raiseBet());
 		down.addActionListener(new lowerBet());
 		stay.addActionListener(new endTurn());
+		rules.addActionListener(new showRules());
 	}
 	
 	public static void removeLineFromFile(String file) {
@@ -424,7 +425,6 @@ public class BlackJackMain {
 
 	      if (!inFile.isFile()) {
 	        System.out.println("Parameter is not an existing file");
-	        return;
 	      }
 
 	      //Construct the new file that will later be renamed to the original filename.
@@ -434,6 +434,7 @@ public class BlackJackMain {
 	      PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
 
 	      String line = null;
+	      System.out.println("testing");
 
 	      //Read from the original file and write to the new
 	      //unless content matches data to be removed.
@@ -1270,11 +1271,11 @@ public class BlackJackMain {
 							numRecords++;
 							winLoss.setVisible(true);
 							message.setVisible(true);
-							pw.close();
+							
 							if (numRecords > 10) {
 								removeLineFromFile("user_records.txt");
 							}
-							
+							pw.close();
 							reset = true;
 							
 							}
@@ -1376,6 +1377,28 @@ private class endTurn implements ActionListener {
 		hit.setVisible(false);
 		stay.setVisible(false);
 		bet.setVisible(false);
+		
+	}
+
+}
+
+private class showRules implements ActionListener {
+	
+	public void actionPerformed(ActionEvent e) {
+		//Ends the players turn
+		JOptionPane.showMessageDialog(frame,
+				"Welcome to Blackjack " + plyr.getID() + ".\n\n"
+				+ "You must first bet without seeing your cards. After that, your cards will flip and so will one of the dealers.\n"
+				+ "Your goal is to try and get as close to 21 without going over. Each face card excluding aces have a value of 10.\n"
+				+ "Aces have a value of 1 or 11 based off the value of your hand. Every numerical card has the value of its number.\n"
+				+ "Once it is your turn you have the option to 'hit' (take another card) or 'stay' (End your turn).\n"
+				+ "After that is done, the cpu and dealer will do the same until the dealer has a hand greater or equal to 17.\n"
+				+ "To win, you must have a greater value than the dealer but not exceed 21 or have a lower value than the dealer\n"
+				+ "when the dealer has a value over 21. If you have a jack and an ace as your only two cards you have blackjack!\n\n"
+				+ "Here are the following payouts:\n"
+				+ "BlackJack = Your Bet multiplied by 3\n"
+				+ "Beating the dealer = Your Bet multiplied by 2\n"
+				+ "Losing to the dealer = 0");
 		
 	}
 

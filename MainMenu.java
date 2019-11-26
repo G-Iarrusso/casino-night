@@ -3,12 +3,10 @@ package cp317;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -30,7 +28,7 @@ public class MainMenu {
     	mainFrame.setVisible(true);
     	
     	//Creates the background Image
-    	ImageIcon icon = new ImageIcon("Other_Images/Casino.jpg");
+    	ImageIcon icon = new ImageIcon("Blackjack_Images/Casino.jpg");
     	Image iconTemp = icon.getImage().getScaledInstance(900, 900, Image.SCALE_DEFAULT);
     	ImageIcon background = new ImageIcon(iconTemp);
     	
@@ -282,26 +280,55 @@ public class MainMenu {
 		games.addActionListener(new goGames());
 		blackjack.addActionListener(new Blackjack());
 		roulette.addActionListener(new Roulette());
+		slots.addActionListener(new Slots());
+		craps.addActionListener(new Craps());
 		records.addActionListener(new gamesRecords());
 	}
 	
-	private void updateMoney(Player pUpdate) {
+	public static void removeContentsOfFile(String file) {
+		//This function deltes the first line of a file by copying the contents of the original file except for the first line
+		// and then pasting it to a new file. The old file is delted and the new one is renamed the same as the old one.
+		
+		  File inFile = new File(file);
+		
+		  if (!inFile.isFile()) {
+		    System.out.println("Parameter is not an existing file");
+		    return;
+		  }
+
+		  if (inFile.delete()){
+			    try {
+					inFile.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		  }
+	}
+	
+	private void updateMoney(Player pUpdate, JFrame mainFrame) {
 		//Creates a thread to update the players money every 5 seconds
-				Thread t = new Thread() {
-					//Start the thread
-					public void run() {
-						while (loggedIn) {
-							try {
-								Thread.sleep(5000);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							response.setText("Hello " + pUpdate.getID() + ", you have $" + pUpdate.getMoney());
-						}
+		Thread t = new Thread() {
+			//Start the thread
+			public void run() {
+				while (loggedIn) {
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				};
-				t.start();
+					if (pUpdate.getMoney() == 0 && !mainFrame.isVisible()) {
+						pUpdate.changeMoney(1000);
+						response.setText("You ran out of money! Heres $1000 on the house.");
+					}
+					else {
+						response.setText("Hello " + pUpdate.getID() + ", you have $" + pUpdate.getMoney());
+					}
+				}
+			}
+		};
+		t.start();
 	}
 	
 	private class openUsername1 implements ActionListener {
@@ -366,7 +393,7 @@ public class MainMenu {
 						rec10.setText("10. " + rLine);
 					cnt++;
 				}
-				
+				r1.close();
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -489,6 +516,7 @@ public class MainMenu {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			numRecords = puser.getFileNum();
+			System.out.println("Num Records: " + numRecords);
 			BlackJackMain bj = new BlackJackMain();
 			bj.Startup(puser, mainFrame, numRecords);
 			mainFrame.setVisible(false);
@@ -510,6 +538,9 @@ public class MainMenu {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			numRecords = puser.getFileNum();
+			CrapsMain c = new CrapsMain();
+            c.startup(puser, mainFrame, numRecords);
+            mainFrame.setVisible(false);
 		}
 	}
 	
@@ -519,6 +550,8 @@ public class MainMenu {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			numRecords = puser.getFileNum();
+			SlotsMain s = new SlotsMain();
+			s.StartupSlots(puser, mainFrame);
 		}
 	}
 	
@@ -541,7 +574,6 @@ public class MainMenu {
 			error = false;
 		}
 	}
-	
 	
 	private class enterUsername implements ActionListener {
 
@@ -615,7 +647,9 @@ public class MainMenu {
 						back1 = false;
 						back2 = true;
 						loggedIn = true;
-						updateMoney(puser);
+						removeContentsOfFile("user_records.txt");
+						puser.setFileNum(0);
+						updateMoney(puser, mainFrame);
 					}
 					sameName = false;
 			    }
@@ -648,7 +682,10 @@ public class MainMenu {
 							back1 = false;
 							back2 = true;
 							loggedIn = true;
-							updateMoney(puser);
+							
+							removeContentsOfFile("user_records.txt");
+							puser.setFileNum(0);
+							updateMoney(puser, mainFrame);
 					    }
 					    //Otherwise reset
 					    else {

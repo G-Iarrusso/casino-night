@@ -30,5 +30,9 @@ public class Player {
 	public int getFileNum() {
 		return this.fileNum;
 	}
+	
+	public void setFileNum(int n) {
+		this.fileNum = n;
+	}
 }
 

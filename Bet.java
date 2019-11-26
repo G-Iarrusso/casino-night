@@ -3,7 +3,7 @@ package cp317;
 public class Bet {
 
 	
-	private final int values[] = {1, 5, 10, 25, 50, 100, 500};
+	private final int values[] = {5, 10, 25, 50, 100, 250, 500};
 	private int len;
 	private int betVal;
 	private int index;
