@@ -7,8 +7,13 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +28,8 @@ public class SlotsMain
 		SlotsMain s = new SlotsMain();
 		Player p = new Player("Matt", 10);
 		JFrame n = new JFrame();
-		s.StartupSlots(p, n);
+		int numrecords=0;
+		s.StartupSlots(p, n, numrecords);
 	}
 
 	// creating labels
@@ -96,14 +102,15 @@ public class SlotsMain
 	int slot3index = 20;
 	int spin1 = 0, spin2 = 0, spin3 = 0;
 	int losingstreak = 0;
-
+	
+	PrintWriter pw;
 	File file = new File("user_records.txt");
 	File f = new File("Slots_Images");
 	// going to need a file of slots images
 
 	final JFrame frame = new JFrame("Slots");
 
-	public void StartupSlots(Player p, JFrame mainFrame)
+	public void StartupSlots(Player p, JFrame mainFrame, int numrecords)
 	{
 		frame.setSize(1400, 900);
 		frame.setLocationRelativeTo(null);
@@ -351,10 +358,8 @@ public class SlotsMain
 
 				}
 
-			} while (
-				!(first_slot_val.equals(second_slot_val) && first_slot_val.equals(third_slot_val)) && losingstreak >= 4
-			);
-			//
+			} while (!(first_slot_val.equals(second_slot_val) && first_slot_val.equals(third_slot_val)) && losingstreak >= 4);
+			
 			temp1 = new ImageIcon(slot1image);
 			temp2 = new ImageIcon(slot2image);
 			temp3 = new ImageIcon(slot3image);
@@ -510,14 +515,28 @@ public class SlotsMain
 					earning.setText("Payout: $" + payout);
 					money.setText("Money: $ " + plyr.getMoney());
 					spin.setEnabled(true);
-				}
+					try {
+						pw = new PrintWriter(new FileOutputStream(file, true));
+						
+						if (payout==5) {
+							pw.append("Broke even playing Slots\n");
+						}
+						else if (payout<5) {
+							pw.append("Lost $5 playing Slots\n");
+						}
+						else {
+							pw.append("Gained $"+ (payout-5)+" playing Slots\n");
+						}
+					}
+					catch (Exception e1) {
+						System.out.println("FILE IO ERROR IN SLOTS");
+					}
+					pw.close();
+				}		
 			};
 			t.start();
-
 		}
-
-	}
-
+	} 
 	private class goBack implements ActionListener
 	{
 		@Override
@@ -540,4 +559,58 @@ public class SlotsMain
 			
 		}
 	}
+
+public static void removeLineFromFile(String file) {
+	//This function deltes the first line of a file by copying the contents of the original file except for the first line
+	// and then pasting it to a new file. The old file is delted and the new one is renamed the same as the old one.
+	int c = 0;
+    try {
+
+      File inFile = new File(file);
+
+      if (!inFile.isFile()) {
+        System.out.println("Parameter is not an existing file");
+        return;
+      }
+
+      //Construct the new file that will later be renamed to the original filename.
+      File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
+
+      BufferedReader br = new BufferedReader(new FileReader(file));
+      PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+
+      String line = null;
+
+      //Read from the original file and write to the new
+      //unless content matches data to be removed.
+      while ((line = br.readLine()) != null) {
+
+        if (c != 0) {
+        	pw.println(line);
+            pw.flush();
+            c++;
+          }
+        c++;
+        }
+        pw.close();
+        br.close();
+
+        //Delete the original file
+        if (!inFile.delete()) {
+          System.out.println("Could not delete file");
+          return;
+        }
+
+        //Rename the new file to the filename the original file had.
+        if (!tempFile.renameTo(inFile))
+          System.out.println("Could not rename file");
+
+      }
+      catch (FileNotFoundException ex) {
+        ex.printStackTrace();
+      }
+      catch (IOException ex) {
+        ex.printStackTrace();
+      }
+}
 }
