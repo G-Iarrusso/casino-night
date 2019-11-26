@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.Scanner;
 
 import javax.swing.*; 
 /*
@@ -25,15 +24,17 @@ write - > global function that writes to file
 
 public class craps 
 {
+	File file = new File("user_records.txt");
 
 	boolean snakeeyes;
 	boolean aceduece;
 	boolean nat7;
 	boolean nat11;
 	boolean boxcars;
-	int bet[] = {1,5,10,25,50,100};
+	int bets[] = {5,10,25,50,100,250,500};
 	int index = 0;
-
+	PrintWriter pw;
+	int lines  = 0;
 	int count = 0;
 	int target= 0;
 	boolean done = false;
@@ -43,7 +44,7 @@ public class craps
 	JLabel targetVal = new JLabel("0");
 	JLabel outcomeVal = new JLabel("");
 	JLabel totVal;
-	JLabel betVal = new JLabel("1");
+	JLabel betVal = new JLabel("5");
 	JFrame frame = new JFrame("Craps");
 
 	ImageIcon dice_1 = new ImageIcon ("1.png");
@@ -73,6 +74,8 @@ public class craps
 	JLabel dice1 = new JLabel();
 	JLabel dice2 = new JLabel();
 
+	JFrame home = new JFrame();
+
 	JButton endGame = new JButton("End Game");
 	JButton rules = new JButton("Rules");
 	JButton roll = new JButton("Roll");
@@ -88,10 +91,6 @@ public class craps
 
 	public void spin(int bet)
 	{	
-		if(bet > ply.getMoney())
-		{
-			bet = ply.getMoney();
-		}
 		if(count == 0)
 		{
 			target = 0;
@@ -102,90 +101,115 @@ public class craps
 		int roll = die_1+die_2;
 		face1(die_1);
 		face2(die_2);
-		if(snakeeyes || aceduece || nat7||nat11||boxcars)
-		{
-			if(snakeeyes && roll == 2 )
+		try {
+			pw = new PrintWriter(new FileOutputStream(file, true));
+			if(snakeeyes || aceduece || nat7||nat11||boxcars)
 			{
-				ply.changeMoney(4*bet);
-				done = true;
-				totVal.setText(Integer.toString(ply.getMoney()));
-				outcomeVal.setText("HIT PROP");
+				if(snakeeyes && roll == 2 )
+				{
+					ply.changeMoney(5*bet);
+					done = true;
+					totVal.setText(Integer.toString(ply.getMoney()));
+					outcomeVal.setText("HIT PROP");
+					pw.append("Gained " + bet * 5 + " playing Craps\n");
+				}
+				else if(aceduece  && roll == 3)
+				{
+					ply.changeMoney(5*bet);
+					done = true;
+					totVal.setText(Integer.toString(ply.getMoney()));
+					outcomeVal.setText("HIT PROP");
+					pw.append("Gained " + bet * 5 + " playing Craps\n");
+				}
+				else if(nat7 && roll == 7)
+				{
+					ply.changeMoney(5*bet);
+					done = true;
+					totVal.setText(Integer.toString(ply.getMoney()));
+					outcomeVal.setText("HIT PROP");
+					pw.append("Gained " + bet * 5 + " playing Craps\n");
+				}
+				else if(nat11 && roll == 11)
+				{
+					ply.changeMoney(5*bet);
+					done = true;
+					totVal.setText(Integer.toString(ply.getMoney()));
+					outcomeVal.setText("HIT PROP");
+					pw.append("Gained " + bet * 5 + " playing Craps\n");
+				}
+				else if(boxcars && roll == 12)
+				{
+					ply.changeMoney(5*bet);
+					done = true;
+					totVal.setText(Integer.toString(ply.getMoney()));
+					outcomeVal.setText("HIT PROP");
+					pw.append("Gained " + bet * 5 + " playing Craps\n");
+				}
+				else
+				{
+					ply.changeMoney(-bet);
+					done = true;
+					totVal.setText(Integer.toString(ply.getMoney()));
+					outcomeVal.setText("MISSED PROP");
+					pw.append("Lost " + bet + " playing Craps\n");
+				}
 			}
-			else if(aceduece  && roll == 3)
-			{
-				ply.changeMoney(4*bet);
-				done = true;
-				totVal.setText(Integer.toString(ply.getMoney()));
-				outcomeVal.setText("HIT PROP");
+			else {
+
+				if ((roll == 7 || roll == 11) && target == 0)
+				{
+					ply.changeMoney(bet);
+					done = true;
+					totVal.setText(Integer.toString(ply.getMoney()));
+					outcomeVal.setText("NATUARLLY");
+					lines++;
+					pw.append("Gained " + bet * 2 + " playing Craps\n");
+				}
+				else if((roll == 2|| roll == 3 || roll == 12) && target == 0)
+				{
+					ply.changeMoney(-bet);
+					done = true;
+					totVal.setText(Integer.toString(ply.getMoney()));
+					outcomeVal.setText("CRAPS");
+					pw.append("Lost " + bet + " playing Craps\n");
+					lines++;
+				}
+				else if(target == 0)
+				{
+					target = roll;
+					outcomeVal.setText("LINE SET AT: "+ roll);
+					targetVal.setText(Integer.toString(target));
+					count++;
+					lines++;
+
+				}
+				else if(target > 1 && roll == 7)
+				{
+					ply.changeMoney(-bet);
+					done = true;
+					totVal.setText(Integer.toString(ply.getMoney()));
+					outcomeVal.setText("CRAPPED OUT ON THE LINE");
+					pw.append("Lost " + bet + " playing Craps\n");
+					lines++;
+				}
+				else if(target == roll)
+				{
+					ply.changeMoney(bet);
+					done = true;
+					totVal.setText(Integer.toString(ply.getMoney()));
+					outcomeVal.setText("YOU GOT THE LINE");
+					pw.append("Gained " + bet+ " playing Craps\n");
+					lines++;
+				}
 			}
-			else if(nat7 && roll == 7)
-			{
-				ply.changeMoney(4*bet);
-				done = true;
-				totVal.setText(Integer.toString(ply.getMoney()));
-				outcomeVal.setText("HIT PROP");
-			}
-			else if(nat11 && roll == 11)
-			{
-				ply.changeMoney(4*bet);
-				done = true;
-				totVal.setText(Integer.toString(ply.getMoney()));
-				outcomeVal.setText("HIT PROP");
-			}
-			else if(boxcars && roll == 12)
-			{
-				ply.changeMoney(4*bet);
-				done = true;
-				totVal.setText(Integer.toString(ply.getMoney()));
-				outcomeVal.setText("HIT PROP");
-			}
-			else
-			{
-				ply.changeMoney(-bet);
-				done = true;
-				totVal.setText(Integer.toString(ply.getMoney()));
-				outcomeVal.setText("MISSED PROP");
+			pw.close();
+			if (lines > 10) {
+				removeLineFromFile("user_records.txt");
 			}
 		}
-		else {
-
-			if ((roll == 7 || roll == 11) && target == 0)
-			{
-				ply.changeMoney(bet);
-				done = true;
-				totVal.setText(Integer.toString(ply.getMoney()));
-				outcomeVal.setText("NATUARLLY");
-			}
-			else if((roll == 2|| roll == 3 || roll == 12) && target == 0)
-			{
-				ply.changeMoney(-bet);
-				done = true;
-				totVal.setText(Integer.toString(ply.getMoney()));
-				outcomeVal.setText("CRAPS");
-			}
-			else if(target == 0)
-			{
-				target = roll;
-				outcomeVal.setText("LINE SET AT: "+ roll);
-				targetVal.setText(Integer.toString(target));
-				count++;
-
-			}
-			else if(target > 1 && roll == 7)
-			{
-				ply.changeMoney(-bet);
-				done = true;
-				totVal.setText(Integer.toString(ply.getMoney()));
-				outcomeVal.setText("CRAPPED OUT ON THE LINE");
-			}
-			else if(target == roll)
-			{
-				ply.changeMoney(bet);
-				done = true;
-				totVal.setText(Integer.toString(ply.getMoney()));
-				outcomeVal.setText("YOU GOT THE LINE");
-			}
-		}
+		catch (Exception e1) {
+			System.out.println("FILE IO ERROR IN BLACKJACK");
+		}		
 		if(!done)
 		{
 			rules.setEnabled(false);
@@ -212,14 +236,14 @@ public class craps
 			eleven.setEnabled(true);
 			boxcars1.setEnabled(true);
 			count = 0;
+			index = 0;
+			betVal.setText(Integer.toString(bets[index]));
 		}
 		if(ply.getMoney() == 0)
 		{
-			JOptionPane.showMessageDialog(frame, "WELL YOURE BROKE\n"
-					+ "Since we like you so much we will give u a \"little\" loan\n"
-					+ "Your new balance is $1000");
-			ply.changeMoney(1000);
-			totVal.setText(Integer.toString(ply.getMoney()));
+			done = true;
+			home.setVisible(true);
+			frame.dispose();
 		}
 	}
 
@@ -227,11 +251,11 @@ public class craps
 	{
 		if(value ==1)
 		{
-		dice1.setIcon(die1);
+			dice1.setIcon(die1);
 		}
 		if(value ==2)
 		{
-		
+
 			dice1.setIcon(die2);
 		}
 		if(value ==3)
@@ -279,8 +303,64 @@ public class craps
 		}
 	}
 
+	public static void removeLineFromFile(String file) {
+		//This function deltes the first line of a file by copying the contents of the original file except for the first line
+		// and then pasting it to a new file. The old file is delted and the new one is renamed the same as the old one.
+		int c = 0;
+		try {
+
+			File inFile = new File(file);
+
+			if (!inFile.isFile()) {
+				System.out.println("Parameter is not an existing file");
+				return;
+			}
+
+			//Construct the new file that will later be renamed to the original filename.
+			File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
+
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+
+			String line = null;
+
+			//Read from the original file and write to the new
+			//unless content matches data to be removed.
+			while ((line = br.readLine()) != null) {
+
+				if (c != 0) {
+					pw.println(line);
+					pw.flush();
+					c++;
+				}
+				c++;
+			}
+			pw.close();
+			br.close();
+
+			//Delete the original file
+			if (!inFile.delete()) {
+				System.out.println("Could not delete file");
+				return;
+			}
+
+			//Rename the new file to the filename the original file had.
+			if (!tempFile.renameTo(inFile))
+				System.out.println("Could not rename file");
+
+		}
+		catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
 	public void startup(Player p,JFrame mainFrame)
 	{
+
+		home = mainFrame;
 		frame.setSize(1400, 900);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
@@ -416,7 +496,8 @@ public class craps
 		rules ru = new rules();
 		rules.addActionListener(ru);
 
-
+		end ed = new end();
+		endGame.addActionListener(ed);
 
 		panel.add(betl);
 		panel.add(betVal);
@@ -487,7 +568,7 @@ public class craps
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			targetVal.setText("0");
-			spin(bet[index]);
+			spin(bets[index]);
 			snakeeyes = false;
 			aceduece = false; 
 			nat7 = false;
@@ -500,10 +581,10 @@ public class craps
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(index != 5 & bet[index] <= ply.getMoney())
+			if(index != 6 & bets[index+1] <= ply.getMoney())
 			{
 				index++;
-				betVal.setText(Integer.toString(bet[index]));
+				betVal.setText(Integer.toString(bets[index]));
 			}
 		}
 	}
@@ -515,7 +596,7 @@ public class craps
 			if(index != 0)
 			{
 				index--;
-				betVal.setText(Integer.toString(bet[index]));
+				betVal.setText(Integer.toString(bets[index]));
 			}
 		}
 	}
@@ -531,7 +612,7 @@ public class craps
 			boxcars = false;
 			index = 0;
 			outcomeVal.setText("");
-			betVal.setText(Integer.toString(bet[index]));
+			betVal.setText(Integer.toString(bets[index]));
 			targetVal.setText("0");
 		}
 	}
@@ -553,6 +634,19 @@ public class craps
 					+ "\nBoxcars-------------6 , 6"
 					+ "\nALL PROPS RESET ON NEXT ROLL");
 
+		}
+	}
+	
+	private class end  implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (target != 0)
+			{
+				ply.changeMoney(-bets[index]);
+			}
+			home.setVisible(true);
+			frame.dispose();
 		}
 	}
 
