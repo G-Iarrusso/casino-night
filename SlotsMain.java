@@ -223,9 +223,6 @@ public class SlotsMain
 				first_slot_num = (int) (Math.random() * 100);
 				second_slot_num = (int) (Math.random() * 100);
 				third_slot_num = (int) (Math.random() * 100);
-				first_slot_num = 100;
-				second_slot_num = 100;
-				third_slot_num =100;
 			
 			
 				if (first_slot_num <= 35)
