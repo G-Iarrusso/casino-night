@@ -4,6 +4,7 @@ public class Player {
 
 	private int money = 0;
 	private String id = "";
+	private int fileNum = 0;
 	
 	public Player(String id, int money) {
 		this.money = money;
@@ -20,6 +21,14 @@ public class Player {
 	
 	public String getID() {
 		return this.id;
+	}
+	
+	public void updateFileNum(int n) {
+		this.fileNum = n;
+	}
+	
+	public int getFileNum() {
+		return this.fileNum;
 	}
 }
 
