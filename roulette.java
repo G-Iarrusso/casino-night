@@ -52,6 +52,7 @@ public class roulette {
 	JTextField userbetnum = new JTextField("");
 	JButton red = new JButton("red");
 	JButton black = new JButton("black");
+	JTextField winlose = new JTextField("Win/Lose?");
 
 	public void Startup(Player p, JFrame mainFrame, int num) {
 
@@ -88,6 +89,7 @@ public class roulette {
 		userbetnum.setBounds(250, 600, 200, 100);
 		red.setBounds(500, 500, 200, 100);
 		black.setBounds(500, 600, 200, 100);
+		winlose.setBounds(800,500,200,100);
 
 		// add to panel
 		panel.add(bet);
@@ -100,6 +102,7 @@ public class roulette {
 		panel.add(userbetnum);
 		panel.add(red);
 		panel.add(black);
+		panel.add(winlose);
 
 		// set colour of buttons		
 		bet.setBackground(Color.green);
@@ -112,6 +115,7 @@ public class roulette {
 		red.setForeground(Color.white);
 		black.setBackground(Color.black);
 		black.setForeground(Color.white);
+		winlose.setBackground(Color.gray);
 		
 		// Set the background to work and have everything placed onto the gui
 		panel.setOpaque(false);
