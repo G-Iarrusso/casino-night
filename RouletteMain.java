@@ -22,7 +22,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 
 
@@ -34,7 +37,8 @@ public class RouletteMain {
 		JFrame n = new JFrame();
 		r.Startup(p, n, 10);
 	}
-	
+	SpinnerModel model = new SpinnerNumberModel(0,0,36,1);
+	JSpinner spinner = new JSpinner(model);
 	File file = new File("user_records.txt");
 	
 	JLabel info = new JLabel("Enter a bet");
@@ -57,7 +61,6 @@ public class RouletteMain {
 	JButton rules = new JButton("Rules");
 	
 	JTextField betText = new JTextField("$5");
-	JTextField numText = new JTextField("1");
 	Bet betting = new Bet();
 	
 	JFrame frame = new JFrame("Roulette");
@@ -114,13 +117,12 @@ public class RouletteMain {
 		even.setFont(new Font("Serif", Font.PLAIN, 25));
 		odd.setFont(new Font("Serif", Font.PLAIN, 25));
 		betText.setFont(new Font("Serif", Font.PLAIN, 50));
-		numText.setFont(new Font("Serif", Font.PLAIN, 50));
+		spinner.setFont(new Font("Serif", Font.PLAIN, 50));
 		
 		
 		info.setHorizontalAlignment(JTextField.CENTER);
 		playerMoney.setHorizontalAlignment(JTextField.CENTER);
 		betText.setHorizontalAlignment(JTextField.CENTER);
-		numText.setHorizontalAlignment(JTextField.CENTER);
 		
 		middle.setBackground(Color.BLACK);
 		middle.setText("" + 1);
@@ -138,14 +140,14 @@ public class RouletteMain {
 		betUp.setBackground(gold);
 		betDown.setBackground(gold);
 		betText.setBackground(gold);
-		numText.setBackground(gold);
+		spinner.setBackground(gold);
 		
 		enterBet.setBounds(200, 0, 200, 150);
 		betText.setBounds(400, 0, 400, 150);
 		betUp.setBounds(800, 0, 200, 150);
 		betDown.setBounds(1000, 0, 200, 150);
 		enterNum.setBounds(0, 710, 200, 150);
-		numText.setBounds(200, 710, 400, 150);
+		spinner.setBounds(200, 710, 400, 150);
 		red.setBounds(600, 710, 200, 150);
 		black.setBounds(800, 710, 200, 150);
 		even.setBounds(1000, 710, 200, 150);
@@ -166,7 +168,7 @@ public class RouletteMain {
 		panel.add(betUp);
 		panel.add(red);
 		panel.add(black);
-		panel.add(numText);
+		panel.add(spinner);
 		panel.add(enterNum);
 		panel.add(even);
 		panel.add(odd);
@@ -190,7 +192,7 @@ public class RouletteMain {
 		even.setEnabled(false);
 		odd.setEnabled(false);
 		enterNum.setEnabled(false);
-		numText.setEnabled(false);
+		spinner.setEnabled(false);
 		
 		left2.setVisible(false);
 		left1.setVisible(false);
@@ -225,7 +227,7 @@ private class goBack implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			//Ends the game and returns to the main menu
 			menuFrame.setVisible(true);
-			plyr.updateFileNum(numRecords);
+			//plyr.updateFileNum(numRecords);
 			done = true;
 			frame.dispose();
 		}
@@ -241,7 +243,7 @@ private class setRed implements ActionListener {
 		even.setEnabled(false);
 		odd.setEnabled(false);
 		enterNum.setEnabled(false);
-		numText.setEnabled(false);
+		spinner.setEnabled(false);
 		bet = "Red";
 		info.setText("You chose red");
 	}
@@ -257,7 +259,7 @@ private class setBlack implements ActionListener {
 		even.setEnabled(false);
 		odd.setEnabled(false);
 		enterNum.setEnabled(false);
-		numText.setEnabled(false);
+		spinner.setEnabled(false);
 		bet = "Black";
 		info.setText("You chose black");
 	}
@@ -273,7 +275,7 @@ private class setEven implements ActionListener {
 		even.setEnabled(false);
 		odd.setEnabled(false);
 		enterNum.setEnabled(false);
-		numText.setEnabled(false);
+		spinner.setEnabled(false);
 		bet = "Even";
 		info.setText("You chose even");
 	}
@@ -289,7 +291,7 @@ private class setOdd implements ActionListener {
 		even.setEnabled(false);
 		odd.setEnabled(false);
 		enterNum.setEnabled(false);
-		numText.setEnabled(false);
+		spinner.setEnabled(false);
 		bet = "Odd";
 		info.setText("You chose odd");
 	}
@@ -300,22 +302,15 @@ private class setNumber implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//Ends the game and returns to the main menu
-		bet = numText.getText();
-		int temp = Integer.parseInt(bet);
-		if (temp > 0 && temp < 37) {
+		
+		int temp = (int) spinner.getValue();
 			red.setEnabled(false);
 			black.setEnabled(false);
 			even.setEnabled(false);
 			odd.setEnabled(false);
 			enterNum.setEnabled(false);
-			numText.setEnabled(false);
-			info.setText("You chose the number " + temp);
-		}
-		else {
-			info.setText("Please enter a number between 1 and 35");
-		}
-		
-		
+			spinner.setEnabled(false);
+			info.setText("You chose the number " + temp);	
 	}
 }
 
@@ -329,7 +324,7 @@ private class betEntered implements ActionListener {
 		even.setEnabled(true);
 		odd.setEnabled(true);
 		enterNum.setEnabled(true);
-		numText.setEnabled(true);
+		spinner.setEnabled(true);
 		
 		enterBet.setEnabled(false);
 		betText.setEnabled(false);
@@ -460,7 +455,7 @@ private class lowerBet implements ActionListener {
 					even.setEnabled(false);
 					odd.setEnabled(false);
 					enterNum.setEnabled(false);
-					numText.setEnabled(false);
+					spinner.setEnabled(false);
 					
 					enterBet.setEnabled(true);
 					betText.setEnabled(true);
