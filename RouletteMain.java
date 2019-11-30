@@ -74,6 +74,7 @@ public class RouletteMain {
 	boolean done = false;
 	String bet = "";
 	Random rand = new Random();
+	Color gold = new Color(200,150,15);
 
 	public void Startup(Player p, JFrame mainFrame, int num) {
 		
@@ -86,17 +87,58 @@ public class RouletteMain {
 		menuFrame = mainFrame;
 		plyr = p;
 		
+		ImageIcon icon = new ImageIcon("Roulette_Images/roulette-wheel.jpg");
+    	Image iconTemp = icon.getImage().getScaledInstance(1400, 900, Image.SCALE_DEFAULT);
+    	ImageIcon background = new ImageIcon(iconTemp);
+    	JLabel contentPane = new JLabel();
+    	contentPane.setIcon(background);
+    	contentPane.setLayout(new BorderLayout());
+    	frame.setContentPane(contentPane);
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		
 		playerMoney.setText(plyr.getID() + ": $" + plyr.getMoney());
 		
-		info.setFont(new Font("Serif", Font.PLAIN, 30));
-		playerMoney.setFont(new Font("Serif", Font.PLAIN, 30));
+		info.setFont(new Font("Serif", Font.PLAIN, 40));
+		playerMoney.setFont(new Font("Serif", Font.PLAIN, 40));
 		middle.setFont(new Font("Serif", Font.BOLD, 30));
+		enterBet.setFont(new Font("Serif", Font.PLAIN, 25));
+		endGame.setFont(new Font("Serif", Font.PLAIN, 25));
+		betUp.setFont(new Font("Serif", Font.BOLD, 25));
+		betDown.setFont(new Font("Serif", Font.BOLD, 25));
+		rules.setFont(new Font("Serif", Font.PLAIN, 25));
+		enterNum.setFont(new Font("Serif", Font.PLAIN, 25));
+		red.setFont(new Font("Serif", Font.PLAIN, 25));
+		black.setFont(new Font("Serif", Font.PLAIN, 25));
+		even.setFont(new Font("Serif", Font.PLAIN, 25));
+		odd.setFont(new Font("Serif", Font.PLAIN, 25));
+		betText.setFont(new Font("Serif", Font.PLAIN, 50));
+		numText.setFont(new Font("Serif", Font.PLAIN, 50));
+		
 		
 		info.setHorizontalAlignment(JTextField.CENTER);
 		playerMoney.setHorizontalAlignment(JTextField.CENTER);
+		betText.setHorizontalAlignment(JTextField.CENTER);
+		numText.setHorizontalAlignment(JTextField.CENTER);
+		
+		middle.setBackground(Color.BLACK);
+		middle.setText("" + 1);
+		info.setForeground(Color.white);
+		playerMoney.setForeground(Color.white);
+		red.setBackground(Color.red);
+		black.setBackground(Color.black);
+		black.setForeground(Color.GRAY);
+		enterNum.setBackground(gold);
+		even.setBackground(gold);
+		odd.setBackground(gold);
+		endGame.setBackground(gold);
+		rules.setBackground(gold);
+		enterBet.setBackground(gold);
+		betUp.setBackground(gold);
+		betDown.setBackground(gold);
+		betText.setBackground(gold);
+		numText.setBackground(gold);
 		
 		enterBet.setBounds(200, 0, 200, 150);
 		betText.setBounds(400, 0, 400, 150);
@@ -111,12 +153,12 @@ public class RouletteMain {
 		info.setBounds(350, 80, 700, 300);
 		left2.setBounds(200, 350, 200, 150);
 		left1.setBounds(400, 350, 200, 150);
-		middle.setBounds(600, 350, 200, 150);
+		middle.setBounds(500, 300, 400, 250);
 		right1.setBounds(800, 350, 200, 150);
 		right2.setBounds(1000, 350, 200, 150);
 		endGame.setBounds(0, 0, 200, 150);
 		rules.setBounds(1200, 0, 200, 150);
-		playerMoney.setBounds(350, 400, 700, 300);
+		playerMoney.setBounds(350, 470, 700, 300);
 		
 		panel.add(betText);
 		panel.add(enterBet);
@@ -269,6 +311,9 @@ private class setNumber implements ActionListener {
 			numText.setEnabled(false);
 			info.setText("You chose the number " + temp);
 		}
+		else {
+			info.setText("Please enter a number between 1 and 35");
+		}
 		
 		
 	}
@@ -333,8 +378,7 @@ private class lowerBet implements ActionListener {
 						info.setText("Pick a colour, number, even or odd");
 					}
 					
-					while (counter < 10) {
-						System.out.println(counter);
+					while (counter < 20) {
 						actualNum = rand.nextInt(36);
 						if (actualNum == 0) {
 							actualNum = rand.nextInt(36);
@@ -353,7 +397,7 @@ private class lowerBet implements ActionListener {
 						counter++;
 						
 						try {
-							Thread.sleep(500);
+							Thread.sleep(200);
 						}
 						catch (Exception e) {
 							e.printStackTrace();
@@ -404,7 +448,7 @@ private class lowerBet implements ActionListener {
 					}
 					
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(3000);
 					}
 					catch (Exception e) {
 						e.printStackTrace();
