@@ -306,6 +306,61 @@ public class MainMenu {
 		  }
 	}
 	
+	public static void updateUsers(String file, Player pUpdate) {
+		//This function deltes the first line of a file by copying the contents of the original file except for the first line
+		// and then pasting it to a new file. The old file is delted and the new one is renamed the same as the old one.
+	    try {
+
+	      File inFile = new File(file);
+
+	      if (!inFile.isFile()) {
+	        System.out.println("Parameter is not an existing file");
+	      }
+
+	      //Construct the new file that will later be renamed to the original filename.
+	      File tempFile = new File(inFile.getAbsolutePath() + ".txt");
+
+	      BufferedReader br = new BufferedReader(new FileReader(file));
+	      PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+
+	      String line = null;
+
+	      //Read from the original file and write to the new
+	      //unless content matches data to be removed.
+	      while ((line = br.readLine()) != null) {
+	    	  
+	    	  String[] strArr = line.split(",");
+	    	  
+	    	  	if (strArr[0].equals(pUpdate.getID())) {
+			    	pw.println(pUpdate.getID() + "," + pUpdate.getMoney());
+			        pw.flush();
+	    	  	}
+	    	  	else {
+	    	  		pw.println(line);
+	    	  		pw.flush();
+	    	  	}
+	      }
+	        pw.close();
+	        br.close();
+	      
+	        //Delete the original file
+	        if (!inFile.delete()) {
+	          System.out.println("Could not delete file");
+	        }
+
+	        //Rename the new file to the filename the original file had.
+	        if (!tempFile.renameTo(inFile))
+	          System.out.println("Could not rename file");
+	      
+	      }
+	      catch (FileNotFoundException ex) {
+	        ex.printStackTrace();
+	      }
+	      catch (IOException ex) {
+	        ex.printStackTrace();
+	      }
+	}
+	
 	private void updateMoney(Player pUpdate, JFrame mainFrame) {
 		//Creates a thread to update the players money every 5 seconds
 		Thread t = new Thread() {
@@ -313,18 +368,22 @@ public class MainMenu {
 			public void run() {
 				while (loggedIn) {
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					if (pUpdate.getMoney() == 0 && !mainFrame.isVisible()) {
+					if (pUpdate.getMoney() == 0 && mainFrame.isVisible()) {
 						pUpdate.changeMoney(1000);
 						response.setText("You ran out of money! Heres $1000 on the house.");
 					}
 					else {
 						response.setText("Hello " + pUpdate.getID() + ", you have $" + pUpdate.getMoney());
 					}
+					if (mainFrame.isVisible()) {
+						updateUsers("user_data.txt", pUpdate);
+					}
+					
 				}
 			}
 		};
@@ -370,8 +429,18 @@ public class MainMenu {
 			try {
 				BufferedReader r1 = new BufferedReader(new FileReader(file2));
 				cnt = 0;
+				rec1.setText("1. ");
+				rec2.setText("2. ");
+				rec3.setText("3. ");
+				rec4.setText("4. ");
+				rec5.setText("5. ");
+				rec6.setText("6. ");
+				rec7.setText("7. ");
+				rec8.setText("8. ");
+				rec9.setText("9. ");
+				rec10.setText("10. ");
 				while ((rLine = r1.readLine()) != null) {
-					if (cnt == 0)
+					if (cnt == 0) 
 						rec1.setText("1. " + rLine);
 					else if (cnt == 1)
 						rec2.setText("2. " + rLine);
@@ -516,7 +585,6 @@ public class MainMenu {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			numRecords = puser.getFileNum();
-			System.out.println("Num Records: " + numRecords);
 			BlackJackMain bj = new BlackJackMain();
 			bj.Startup(puser, mainFrame, numRecords);
 			mainFrame.setVisible(false);
@@ -529,6 +597,9 @@ public class MainMenu {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			numRecords = puser.getFileNum();
+			RouletteMain r = new RouletteMain();
+			r.Startup(puser, mainFrame, numRecords);
+			mainFrame.setVisible(false);
 		}
 	}
 	
@@ -551,7 +622,7 @@ public class MainMenu {
 			// TODO Auto-generated method stub
 			numRecords = puser.getFileNum();
 			SlotsMain s = new SlotsMain();
-			s.StartupSlots(puser, mainFrame);
+			s.StartupSlots(puser, mainFrame, numRecords);
 		}
 	}
 	

@@ -126,6 +126,7 @@ public class BlackJackMain {
 	Player plyr;
 	int numRecords;
 	
+	
 	public void Startup(Player p, JFrame mainFrame, int num) {
 		
 		//Create the GUI
@@ -434,7 +435,6 @@ public class BlackJackMain {
 	      PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
 
 	      String line = null;
-	      System.out.println("testing");
 
 	      //Read from the original file and write to the new
 	      //unless content matches data to be removed.
@@ -1284,6 +1284,13 @@ public class BlackJackMain {
 							}
 						}
 						
+						//If the user has no money end the game
+						if (plyr.getMoney() == 0) {
+							done = true;
+							menuFrame.setVisible(true);
+							frame.dispose();
+						}
+						
 						//After a hand is done, this will reset everything in the gui and start again
 						while (reset)  {
 							try {
@@ -1352,12 +1359,7 @@ public class BlackJackMain {
 							cpu2Init = false;
 							dealerInit = false;
 							
-							//If the user has no money end the game
-							if (plyr.getMoney() == 0) {
-								done = true;
-								menuFrame.setVisible(true);
-								frame.dispose();
-							}
+							
 							
 							reset = false;
 						}
@@ -1551,9 +1553,6 @@ private class setBet implements ActionListener {
 			if (plyr.getMoney() >= betting.getNextBet()) {
 				betting.raiseBet();
 				input.setText("$" + betting.getBet());
-			}
-			else {
-				bet.setText("NOT ENOUGH MONEY!");
 			}
 		}
 	}

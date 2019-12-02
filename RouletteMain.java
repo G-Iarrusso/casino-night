@@ -139,7 +139,7 @@ public class RouletteMain {
 		enterBet.setBackground(gold);
 		betUp.setBackground(gold);
 		betDown.setBackground(gold);
-		betText.setBackground(gold);
+		//betText.setBackground(gold);
 		spinner.setBackground(gold);
 		
 		enterBet.setBounds(200, 0, 200, 150);
@@ -227,7 +227,7 @@ private class goBack implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			//Ends the game and returns to the main menu
 			menuFrame.setVisible(true);
-			//plyr.updateFileNum(numRecords);
+			plyr.updateFileNum(numRecords);
 			done = true;
 			frame.dispose();
 		}
