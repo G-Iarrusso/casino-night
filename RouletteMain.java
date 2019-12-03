@@ -354,11 +354,11 @@ private class showRules implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		//Ends the players turn
 		JOptionPane.showMessageDialog(frame,
-				"Welcome to Roulette " + plyr.getID() + ".\n\n" +
-				"In this game you first start by choosing your bet amount by clicking either '+' or '-'.\n" +
-				"Once you have reached an amount you want to bet click enter. Next you must choose what you are\n" +
-				"betting on, either odds, evens, black, red, or a specific number.\n" +
-				"Then the wheel will spin and wait for your results."
+				"WELCOME TO ROULETTE\n" +
+				"In this game you first start by choosing your bet amount by clicking either '+' or '-'\n" +
+				"Once you have reached an amount you want to bet click enter\nNext you must choose what you are" +
+				"betting on, either odds, evens, black, red, or a specific number\n" +
+				"Then the wheel will spin and wait for your results"
 				);
 		
 	}
