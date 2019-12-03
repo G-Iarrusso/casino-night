@@ -16,8 +16,7 @@ public class MainMenu {
 	public static void main(String args[]) {
 		MainMenu menu = new MainMenu();
 		menu.RunProgram();
-	}
-	Color gold = new Color(200,150,15);	
+	}	
 	//Initial setup of gui
 	public void RunProgram() {
 		//Create the GUI
@@ -69,7 +68,7 @@ public class MainMenu {
 	JButton craps = new JButton("Craps");
 	JTextField text = new JTextField(10);
 	Player puser;
-	Color c = Color.magenta;
+	Color c = new Color(200,150,15);;
 	
 	
 	//Declare global variables
