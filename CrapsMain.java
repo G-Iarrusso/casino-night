@@ -6,25 +6,16 @@ import java.awt.event.ActionListener;
 import java.io.*;
 
 import javax.swing.*; 
-/*
-craps
-function:
-get listener -> get bets
-rolls-> generate random numbers
-check-> corespond those bets with the inputs
-show results -> shows the result
-write - > global function that writes to file
- */
-
 public class CrapsMain 
 {
 	File file = new File("user_records.txt");
-
+	//prop bets boolean
 	boolean snakeeyes;
 	boolean aceduece;
 	boolean nat7;
 	boolean nat11;
 	boolean boxcars;
+	//bets and index values 
 	int bets[] = {5,10,25,50,100,250,500};
 	int index = 0;
 	PrintWriter pw;
@@ -34,13 +25,13 @@ public class CrapsMain
 	boolean done = false;
 
 	Player ply;
-
+	//labels for outputs of targetand outcome
 	JLabel targetVal = new JLabel("0");
 	JLabel outcomeVal = new JLabel("");
 	JLabel totVal;
 	JLabel betVal = new JLabel("5");
 	JFrame frame = new JFrame("Craps");
-
+	//dice images 
 	ImageIcon dice_1 = new ImageIcon ("Craps_images/1.png");
 	Image dice1image = dice_1.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT);
 	ImageIcon die1 =new ImageIcon (dice1image);
@@ -67,16 +58,16 @@ public class CrapsMain
 
 	JLabel dice1 = new JLabel();
 	JLabel dice2 = new JLabel();
-
+	
 	JFrame home = new JFrame();
-
+	//global buttons for rules betting and playing
 	JButton endGame = new JButton("End Game");
 	JButton rules = new JButton("Rules");
 	JButton roll = new JButton("Roll");
 	JButton betup = new JButton("+");
 	JButton betdown = new JButton("-");
 	JButton clear = new JButton("Clear");
-
+	//buttons for the props
 	JButton snake = new JButton("Snake Eyes");
 	JButton aceDuece = new JButton("Ace Duece");
 	JButton seven = new JButton("7");
@@ -85,20 +76,26 @@ public class CrapsMain
 
 	public void spin(int bet)
 	{	
+		//check if line is set
 		if(count == 0)
 		{
 			target = 0;
 			done = false;
 		}
+		// roll die
 		int die_1 =  (int) (Math.random()*(6-1+1) + 1);
 		int die_2 =(int) (Math.random()*(6-1+1) + 1);
 		int roll = die_1+die_2;
+		//update faces of dice
 		face1(die_1);
 		face2(die_2);
+		//record outcoem to file
 		try {
 			pw = new PrintWriter(new FileOutputStream(file, true));
+			//check if a prop has been placed
 			if(snakeeyes || aceduece || nat7||nat11||boxcars)
 			{
+				//check all props and output accordingly
 				if(snakeeyes && roll == 2 )
 				{
 					ply.changeMoney(5*bet);
@@ -148,8 +145,9 @@ public class CrapsMain
 					pw.append("Lost " + bet + " playing Craps\n");
 				}
 			}
+			//if no props have been placed need to check base game logic
 			else {
-
+				//check naturally 
 				if ((roll == 7 || roll == 11) && target == 0)
 				{
 					ply.changeMoney(bet);
@@ -159,6 +157,7 @@ public class CrapsMain
 					lines++;
 					pw.append("Gained " + bet * 2 + " playing Craps\n");
 				}
+				//check craps
 				else if((roll == 2|| roll == 3 || roll == 12) && target == 0)
 				{
 					ply.changeMoney(-bet);
@@ -168,6 +167,7 @@ public class CrapsMain
 					pw.append("Lost " + bet + " playing Craps\n");
 					lines++;
 				}
+				//set line
 				else if(target == 0)
 				{
 					target = roll;
@@ -177,6 +177,7 @@ public class CrapsMain
 					lines++;
 
 				}
+				//check if crapped on line
 				else if(target > 1 && roll == 7)
 				{
 					ply.changeMoney(-bet);
@@ -186,6 +187,7 @@ public class CrapsMain
 					pw.append("Lost " + bet + " playing Craps\n");
 					lines++;
 				}
+				//check if hit line
 				else if(target == roll)
 				{
 					ply.changeMoney(bet);
@@ -196,6 +198,7 @@ public class CrapsMain
 					lines++;
 				}
 			}
+			//if there are more then 10 lines need to delete one
 			pw.close();
 			if (lines > 10) {
 				removeLineFromFile("user_records.txt");
@@ -206,6 +209,7 @@ public class CrapsMain
 		}		
 		if(!done)
 		{
+			//if line is set disbale all buttons besides the leavbe and roll button
 			rules.setEnabled(false);
 			betup.setEnabled(false);
 			betdown.setEnabled(false);
@@ -219,6 +223,7 @@ public class CrapsMain
 		}
 		if(done)
 		{
+			// if current bet is over enable all buttons that may have been disabled
 			rules.setEnabled(true);
 			betup.setEnabled(true);
 			betdown.setEnabled(true);
@@ -233,6 +238,7 @@ public class CrapsMain
 			index = 0;
 			betVal.setText(Integer.toString(bets[index]));
 		}
+		// if player has no money send to main menu
 		if(ply.getMoney() == 0)
 		{
 			done = true;
@@ -240,7 +246,7 @@ public class CrapsMain
 			frame.dispose();
 		}
 	}
-
+	// take the value of the first die and apply it to the first die icon
 	public void face1 (int value)
 	{
 		if(value ==1)
@@ -269,6 +275,7 @@ public class CrapsMain
 			dice1.setIcon(die6);
 		}
 	}
+	// take the value of the second die and apply it to the second die icon
 	public void face2 (int value)
 	{
 		if(value ==1)
@@ -353,13 +360,13 @@ public class CrapsMain
 
 	public void startup(Player p,JFrame mainFrame, int num)
 	{
-
+		//initilize the frame
 		home = mainFrame;
 		frame.setSize(1400, 900);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
+		//load images into frame
 		ImageIcon icon = new ImageIcon("Craps_images/craps.jpg");
 		Image iconTemp = icon.getImage().getScaledInstance(1400, 900, Image.SCALE_DEFAULT);
 		ImageIcon background = new ImageIcon(iconTemp);
@@ -384,19 +391,18 @@ public class CrapsMain
 		index = 0;
 
 		totVal = new JLabel(Integer.toString(ply.getMoney()));
-
+		//initilize label
 		JLabel target = new JLabel("Line:");
 		JLabel betl  = new JLabel("Bet:");
 		JLabel outcome = new JLabel("Outcome:");
 		JLabel tot  = new JLabel("Total:");
 		//Create buttons
-
 		dice1.setBackground(Color.BLACK);
 		dice2.setBackground(Color.BLACK);
-
+		//set icons form dice
 		dice1.setIcon(die1);
 		dice2.setIcon(die2);
-
+		//set fonts for labels
 		betl.setFont(new Font("Serif", Font.PLAIN, 25));
 		betl.setForeground(Color.WHITE);
 		betVal.setFont(new Font("Serif", Font.BOLD, 25));
@@ -405,7 +411,6 @@ public class CrapsMain
 		target.setForeground(Color.WHITE);
 		targetVal.setFont(new Font("Serif", Font.BOLD, 25));
 		targetVal.setForeground(Color.WHITE);
-
 		outcome.setFont(new Font("Serif", Font.PLAIN, 25));
 		outcome.setForeground(Color.WHITE);
 		outcomeVal.setFont(new Font("Serif", Font.BOLD, 25));
@@ -415,8 +420,10 @@ public class CrapsMain
 		totVal.setFont(new Font("Serif", Font.BOLD, 25));
 		totVal.setForeground(Color.WHITE);
 
+		//reate custom button color
 		Color customB = new Color(15,125,75);
 
+		//set bounds and colors for all labels and buttons
 		endGame.setBounds	(0, 0,1400/6,200);
 		endGame.setBackground(customB);
 		endGame.setFont(new Font("Serif", Font.BOLD, 25));
@@ -465,6 +472,7 @@ public class CrapsMain
 		boxcars1.setBackground(customB);
 		boxcars1.setFont(new Font("Serif", Font.BOLD, 25));
 
+		//set up action listeners
 		setprop se = new setprop();
 		snake.addActionListener(se);
 		setprop ad = new setprop();
@@ -475,56 +483,44 @@ public class CrapsMain
 		eleven.addActionListener(n11);
 		setprop bc = new setprop();
 		boxcars1.addActionListener(bc);
-
 		rolld rl = new rolld();
 		roll.addActionListener(rl);
-
 		plus pl = new plus();
 		betup.addActionListener(pl);
-
 		minus mn = new minus();
 		betdown.addActionListener(mn);
-
 		clear cl = new clear();
 		clear.addActionListener(cl);
-
 		rules ru = new rules();
 		rules.addActionListener(ru);
-
 		end ed = new end();
 		endGame.addActionListener(ed);
 
+		//add everything to the panel
 		panel.add(betl);
 		panel.add(betVal);
 		panel.add(target);
 		panel.add(targetVal);
-
 		panel.add(outcome);
 		panel.add(outcomeVal);
 		panel.add(tot);
 		panel.add(totVal);
-
 		panel.add(endGame);
 		panel.add(rules);
 		panel.add(roll);
 		panel.add(betup);
 		panel.add(betdown);
 		panel.add(clear);
-
 		panel.add(snake);
 		panel.add(aceDuece);
 		panel.add(seven);
 		panel.add(eleven);
 		panel.add(boxcars1);
-
 		panel.add(dice1);
 		panel.add(dice2);
 
-
-
 		panel.setOpaque(false);
 		panel.setVisible(true);
-
 		frame.add(panel);
 		frame.setVisible(true);
 
@@ -534,6 +530,7 @@ public class CrapsMain
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//set coresponding boolean
 			JButton button = (JButton)e.getSource();
 			if(button.getText() == "Snake Eyes")
 			{
@@ -562,6 +559,7 @@ public class CrapsMain
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//execute roll function
 			targetVal.setText("0");
 			spin(bets[index]);
 			snakeeyes = false;
@@ -576,6 +574,7 @@ public class CrapsMain
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//increase bet index
 			if(index != 6 & bets[index+1] <= ply.getMoney())
 			{
 				index++;
@@ -588,6 +587,7 @@ public class CrapsMain
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//decrease bet index
 			if(index != 0)
 			{
 				index--;
@@ -600,6 +600,7 @@ public class CrapsMain
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//clear all labels, booleans and reset the bet index
 			snakeeyes = false;
 			aceduece = false; 
 			nat7 = false;
@@ -616,6 +617,7 @@ public class CrapsMain
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//print message box with rules
 			JOptionPane.showMessageDialog(frame, "WELCOME TO CRAPS"
 					+ "\nThe point of this game is to roll a 7 or an 11"
 					+ "\nWhile avoiding rolling 2,3,12"
@@ -636,6 +638,7 @@ public class CrapsMain
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			// end the game, if mid game and return to main menu
 			if (target != 0)
 			{
 				ply.changeMoney(-bets[index]);
