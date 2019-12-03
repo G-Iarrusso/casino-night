@@ -47,8 +47,8 @@ public class BlackJackMain {
 	//Create buttons
 	JButton endGame = new JButton("End Game");
 	JButton rules = new JButton("Rules");
-	JButton up = new JButton("");
-	JButton down = new JButton("");
+	JButton up = new JButton("+");
+	JButton down = new JButton("-");
 	JButton enter = new JButton("Enter");
 	JButton hit = new JButton("Hit");
 	JButton stay = new JButton("Stay");
@@ -169,6 +169,8 @@ public class BlackJackMain {
 		timer.setFont(new Font("Serif", Font.PLAIN, 20));
 		message.setFont(new Font("Serif", Font.BOLD, 35));
 		winLoss.setFont(new Font("Serif", Font.BOLD, 20));
+		up.setFont(new Font("Serif", Font.BOLD, 20));
+		down.setFont(new Font("Serif", Font.BOLD, 25));
 		
 		//Make sure text is aligned in the center
 		input.setHorizontalAlignment(JTextField.CENTER);

@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -219,6 +220,7 @@ public class RouletteMain {
 		enterNum.addActionListener(new setNumber());
 		betUp.addActionListener(new raiseBet());
 		betDown.addActionListener(new lowerBet());
+		rules.addActionListener(new showRules());
 	}
 	
 private class goBack implements ActionListener {
@@ -227,7 +229,7 @@ private class goBack implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			//Ends the game and returns to the main menu
 			menuFrame.setVisible(true);
-			plyr.updateFileNum(numRecords);
+			//plyr.updateFileNum(numRecords);
 			done = true;
 			frame.dispose();
 		}
@@ -345,6 +347,22 @@ private class raiseBet implements ActionListener {
 			betText.setText("$" + betting.getBet());
 		}
 	}
+}
+
+private class showRules implements ActionListener {
+	
+	public void actionPerformed(ActionEvent e) {
+		//Ends the players turn
+		JOptionPane.showMessageDialog(frame,
+				"Welcome to Roulette " + plyr.getID() + ".\n\n" +
+				"In this game you first start by choosing your bet amount by clicking either '+' or '-'.\n" +
+				"Once you have reached an amount you want to bet click enter. Next you must choose what you are\n" +
+				"betting on, either odds, evens, black, red, or a specific number.\n" +
+				"Then the wheel will spin and wait for your results."
+				);
+		
+	}
+
 }
 
 private class lowerBet implements ActionListener {

@@ -86,7 +86,7 @@ public class MainMenu {
 	String rLine;
 	String[] user;
 	File file = new File("user_data.txt");
-	File file1 = new File("Other_Images");
+	File file1 = new File("Blackjack_Images");
 	File file2 = new File("user_records.txt");
 	
 	public void Setup(JFrame mainFrame) {
