@@ -26,7 +26,7 @@ public class SlotsMain
 	public static void main(String args[])
 	{
 		SlotsMain s = new SlotsMain();
-		Player p = new Player("Matt", 1000);
+		Player p = new Player("Matt", 5);
 		JFrame n = new JFrame();
 		int numrecords = 0;
 		s.StartupSlots(p, n, numrecords);
@@ -44,7 +44,7 @@ public class SlotsMain
 	JLabel cloverLab = new JLabel("$100");
 	JLabel diamondLab = new JLabel("$250");
 	JLabel sevenLab = new JLabel("$5000");
-
+	boolean flag = false;
 	ImageIcon slot1 = new ImageIcon("Slots_Images/Cherry.jpg");
 	Image slot1image = slot1.getImage().getScaledInstance(99, 125, Image.SCALE_DEFAULT);
 	ImageIcon slot1symbol = new ImageIcon(slot1image);
@@ -165,8 +165,8 @@ public class SlotsMain
 		spin.setOpaque(false);
 		spin.setContentAreaFilled(false);
 		spin.setBorderPainted(false);
-		
-		money.setBounds(600, 780, 400, 100);
+		//780
+		money.setBounds(600, 580, 400, 100);
 		money.setFont(new Font("Serif", Font.PLAIN, 30));
 		earning.setAlignmentX(JTextField.CENTER);
 		earning.setForeground(Color.yellow);
@@ -259,6 +259,9 @@ public class SlotsMain
 		
 			//removing $5 from the player to spin the slot.
 			plyr.changeMoney(-5);
+			if (plyr.getMoney() < 5) {
+				flag = true;
+			}
 			//array list used to implement the spin
 			ArrayList<String> symbols = new ArrayList<String>();
 			symbols.add("Cherry.jpg"); // index 0
@@ -537,7 +540,7 @@ public class SlotsMain
 					)
 					{
 						payout = 5000;
-						plyr.changeMoney(1000);
+						plyr.changeMoney(5000);
 
 					} else if (
 						first_slot_val.equals(second_slot_val) && first_slot_val.equals(third_slot_val)
@@ -583,11 +586,12 @@ public class SlotsMain
 					earning.setText("Payout: $" + payout);
 					money.setText("Money: $ " + plyr.getMoney());
 					//re enabled the button for use
-					if(plyr.getMoney() < 5)
+					System.out.println(plyr.getMoney());
+					if(flag)
 					{
-						
-						menuFrame.setVisible(true);
 						frame.dispose();
+						menuFrame.setVisible(true);
+						
 					}
 					spin.setEnabled(true);
 					//write to the file and delete line if there are too many records
