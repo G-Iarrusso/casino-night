@@ -125,6 +125,7 @@ public class BlackJackMain {
 	Bet betting = new Bet();
 	Player plyr;
 	int numRecords;
+	Color red = new Color(208,32,0);
 	
 	
 	public void Startup(Player p, JFrame mainFrame, int num) {
@@ -180,8 +181,8 @@ public class BlackJackMain {
 		
 		//Set the text color
 		dealer.setForeground(Color.gray);
-		endGame.setBackground(Color.gray);
-		rules.setBackground(Color.gray);
+		endGame.setBackground(red);
+		rules.setBackground(red);
 		cpu1Value.setForeground(Color.white);
 		cpu2Value.setForeground(Color.white);
 		dealerValue.setForeground(Color.white);

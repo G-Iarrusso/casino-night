@@ -44,7 +44,6 @@ public class MainMenu {
 	JLabel image = new JLabel();
 	JLabel name = new JLabel("Casino Games");
 	JLabel response = new JLabel("");
-	JLabel info = new JLabel("Please enter a username");
 	JButton rec1 = new JButton("1. Gained $50 from BlackJack");
 	JButton rec2 = new JButton("2. ");
 	JButton rec3 = new JButton("3. ");
@@ -69,7 +68,7 @@ public class MainMenu {
 	JButton craps = new JButton("Craps");
 	JTextField text = new JTextField(10);
 	Player puser;
-	Color c = Color.magenta;
+	Color c = new Color(200,150,15);
 	
 	
 	//Declare global variables
@@ -103,12 +102,12 @@ public class MainMenu {
 		quit.setBounds(300, 450, 300, 100);
 		button3.setBounds(0, 600, 300, 100);
 		text.setBounds(300, 600, 300, 100);
+		text.setText("Username");
 		
 		//Set the font of labels and buttons
 		text.setFont(new Font("Serif", Font.PLAIN, 40));
 		response.setFont(new Font("Serif", Font.PLAIN, 30));
-		response.setBounds(50, 160, 800, 100);
-		info.setFont(new Font("Serif", Font.PLAIN, 20));
+		response.setBounds(50, 165, 800, 100);
 		rec1.setFont(new Font("Serif", Font.PLAIN, 20));
 		rec2.setFont(new Font("Serif", Font.PLAIN, 20));
 		rec3.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -121,7 +120,6 @@ public class MainMenu {
 		rec10.setFont(new Font("Serif", Font.PLAIN, 20));
 		
 		//Set the alignment of labels and buttons
-		info.setHorizontalAlignment(JLabel.CENTER);
 		response.setHorizontalAlignment(JLabel.CENTER);
 		rec1.setHorizontalAlignment(JTextField.LEFT);
 		rec2.setHorizontalAlignment(JTextField.LEFT);
@@ -135,7 +133,6 @@ public class MainMenu {
 		rec10.setHorizontalAlignment(JTextField.LEFT);
 		
 		//Choose where everything goes on the gui (X, Y, SIZE X, SIZE Y)
-		info.setBounds(200, 550, 500, 50);
 		back.setBounds(800, 00, 100, 50);
 		games.setBounds(300, 250, 300, 100);
 		records.setBounds(300, 350, 300, 100);
@@ -157,7 +154,6 @@ public class MainMenu {
 		
 		//Change the colour of the text in the button and the background of the button
 		name.setForeground(Color.ORANGE);
-		info.setForeground(Color.white);
 		response.setForeground(Color.white);
 		rec1.setForeground(Color.white);
 		rec1.setBackground(Color.black);
@@ -218,7 +214,6 @@ public class MainMenu {
 		panel.add(quit);
 		panel.add(text);
 		panel.add(response);
-		panel.add(info);
 		panel.add(back);
 		panel.add(games);
 		panel.add(records);
@@ -242,7 +237,6 @@ public class MainMenu {
 		button3.setVisible(false);
 		text.setVisible(false);
 		response.setVisible(false);
-		info.setVisible(false);
 		back.setVisible(false);
 		games.setVisible(false);
 		records.setVisible(false);
@@ -398,7 +392,6 @@ public class MainMenu {
 			
 			button3.setVisible(true);
 			text.setVisible(true);
-			info.setVisible(true);
 			back.setVisible(true);
 			response.setVisible(false);
 			
@@ -493,7 +486,6 @@ public class MainMenu {
 			if (back1 && !back2) {
 				button3.setVisible(false);
 				text.setVisible(false);
-				info.setVisible(false);
 				back.setVisible(false);
 				
 				button1.setEnabled(true);
@@ -539,7 +531,6 @@ public class MainMenu {
 			button3.setVisible(false);
 			quit.setEnabled(true);
 			text.setVisible(false);
-			info.setVisible(false);
 			games.setVisible(false);
 			records.setVisible(false);
 			back.setVisible(false);
@@ -633,7 +624,6 @@ public class MainMenu {
 			// TODO Auto-generated method stub
 			button3.setVisible(true);
 			text.setVisible(true);
-			info.setVisible(true);
 			quit.setEnabled(false);
 			back.setVisible(true);
 			response.setVisible(false);
@@ -684,7 +674,6 @@ public class MainMenu {
 					    	
 					    	button3.setVisible(false);
 							text.setVisible(false);
-							info.setVisible(false);
 							back.setVisible(false);
 							button1.setEnabled(true);
 							button2.setEnabled(true);
@@ -709,7 +698,6 @@ public class MainMenu {
 						button3.setVisible(false);
 						quit.setEnabled(true);
 						text.setVisible(false);
-						info.setVisible(false);
 						games.setVisible(true);
 						records.setVisible(true);
 						back.setVisible(false);
@@ -744,7 +732,6 @@ public class MainMenu {
 							button3.setVisible(false);
 							quit.setEnabled(true);
 							text.setVisible(false);
-							info.setVisible(false);
 							games.setVisible(true);
 							records.setVisible(true);
 							back.setVisible(false);
@@ -768,7 +755,6 @@ public class MainMenu {
 							button3.setVisible(false);
 							quit.setEnabled(true);
 							text.setVisible(false);
-							info.setVisible(false);
 							back.setVisible(false);
 					    }
 					}
@@ -780,7 +766,6 @@ public class MainMenu {
 					button3.setVisible(false);
 					quit.setEnabled(true);
 					text.setVisible(false);
-					info.setVisible(false);
 					back.setVisible(false);
 				}
 			}
