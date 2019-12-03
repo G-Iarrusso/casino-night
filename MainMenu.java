@@ -17,7 +17,7 @@ public class MainMenu {
 		MainMenu menu = new MainMenu();
 		menu.RunProgram();
 	}
-	
+	Color gold = new Color(200,150,15);	
 	//Initial setup of gui
 	public void RunProgram() {
 		//Create the GUI
