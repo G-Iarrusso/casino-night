@@ -358,7 +358,11 @@ private class showRules implements ActionListener {
 				"In this game you first start by choosing your bet amount by clicking either '+' or '-'\n" +
 				"Once you have reached an amount you want to bet click enter\nNext you must choose what you are" +
 				"betting on, either odds, evens, black, red, or a specific number\n" +
-				"Then the wheel will spin and wait for your results"
+				"Then the wheel will spin and wait for your results\n"+
+				"Even/Odd pays 2:1\n"+
+				"Red/Black pays 2:1\n"+
+				"Number pays 36:1"
+					  
 				);
 		
 	}
@@ -441,9 +445,9 @@ private class lowerBet implements ActionListener {
 							pw.append("Won $" + betting.getBet() * 2 + " playing Roulette");
 						}
 						else if (bet.equals(temp)) {
-							info.setText("Congratulations you won $" + betting.getBet() * 5 + "!");
-							plyr.changeMoney(betting.getBet() * 5);
-							pw.append("Won $" + betting.getBet() * 5 + " playing Roulette");
+							info.setText("Congratulations you won $" + betting.getBet() * 36 + "!");
+							plyr.changeMoney(betting.getBet() * 36);
+							pw.append("Won $" + betting.getBet() * 36 + " playing Roulette");
 						}
 						else {
 							info.setText("You lost $" + betting.getBet());
