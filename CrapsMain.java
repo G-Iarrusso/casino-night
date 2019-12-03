@@ -153,7 +153,7 @@ public class CrapsMain
 					ply.changeMoney(bet);
 					done = true;
 					totVal.setText(Integer.toString(ply.getMoney()));
-					outcomeVal.setText("NATUARLLY");
+					outcomeVal.setText("NATURALLY");
 					lines++;
 					pw.append("Gained " + bet * 2 + " playing Craps\n");
 				}
