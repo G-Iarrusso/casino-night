@@ -47,8 +47,8 @@ public class BlackJackMain {
 	//Create buttons
 	JButton endGame = new JButton("End Game");
 	JButton rules = new JButton("Rules");
-	JButton up = new JButton("");
-	JButton down = new JButton("");
+	JButton up = new JButton("+");
+	JButton down = new JButton("-");
 	JButton enter = new JButton("Enter");
 	JButton hit = new JButton("Hit");
 	JButton stay = new JButton("Stay");
@@ -126,6 +126,7 @@ public class BlackJackMain {
 	Player plyr;
 	int numRecords;
 	
+	
 	public void Startup(Player p, JFrame mainFrame, int num) {
 		
 		//Create the GUI
@@ -168,6 +169,8 @@ public class BlackJackMain {
 		timer.setFont(new Font("Serif", Font.PLAIN, 20));
 		message.setFont(new Font("Serif", Font.BOLD, 35));
 		winLoss.setFont(new Font("Serif", Font.BOLD, 20));
+		up.setFont(new Font("Serif", Font.BOLD, 20));
+		down.setFont(new Font("Serif", Font.BOLD, 25));
 		
 		//Make sure text is aligned in the center
 		input.setHorizontalAlignment(JTextField.CENTER);
@@ -434,7 +437,6 @@ public class BlackJackMain {
 	      PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
 
 	      String line = null;
-	      System.out.println("testing");
 
 	      //Read from the original file and write to the new
 	      //unless content matches data to be removed.
@@ -1284,6 +1286,13 @@ public class BlackJackMain {
 							}
 						}
 						
+						//If the user has no money end the game
+						if (plyr.getMoney() == 0) {
+							done = true;
+							menuFrame.setVisible(true);
+							frame.dispose();
+						}
+						
 						//After a hand is done, this will reset everything in the gui and start again
 						while (reset)  {
 							try {
@@ -1352,12 +1361,7 @@ public class BlackJackMain {
 							cpu2Init = false;
 							dealerInit = false;
 							
-							//If the user has no money end the game
-							if (plyr.getMoney() == 0) {
-								done = true;
-								menuFrame.setVisible(true);
-								frame.dispose();
-							}
+							
 							
 							reset = false;
 						}
@@ -1551,9 +1555,6 @@ private class setBet implements ActionListener {
 			if (plyr.getMoney() >= betting.getNextBet()) {
 				betting.raiseBet();
 				input.setText("$" + betting.getBet());
-			}
-			else {
-				bet.setText("NOT ENOUGH MONEY!");
 			}
 		}
 	}
