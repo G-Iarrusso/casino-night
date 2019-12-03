@@ -1391,18 +1391,18 @@ private class showRules implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		//Ends the players turn
 		JOptionPane.showMessageDialog(frame,
-				"Welcome to Blackjack " + plyr.getID() + ".\n\n"
-				+ "You must first bet without seeing your cards. After that, your cards will flip and so will one of the dealers.\n"
-				+ "Your goal is to try and get as close to 21 without going over. Each face card excluding aces have a value of 10.\n"
-				+ "Aces have a value of 1 or 11 based off the value of your hand. Every numerical card has the value of its number.\n"
-				+ "Once it is your turn you have the option to 'hit' (take another card) or 'stay' (End your turn).\n"
-				+ "After that is done, the cpu and dealer will do the same until the dealer has a hand greater or equal to 17.\n"
-				+ "To win, you must have a greater value than the dealer but not exceed 21 or have a lower value than the dealer\n"
-				+ "when the dealer has a value over 21. If you have a jack and an ace as your only two cards you have blackjack!\n\n"
+				"WELCOME TO BLACKJACK\n"
+				+ "You must first bet without seeing your cards\nAfter that, your cards will flip and so will one of the dealers.\n"
+				+ "Your goal is to try and get as close to 21 without going over\nEach face card excluding aces have a value of 10\n"
+				+ "Aces have a value of 1 or 11 based off the value of your hand\nEvery numerical card has the value of its number\n"
+				+ "Once it is your turn you have the option to 'hit' (take another card) or 'stay' (End your turn)\n"
+				+ "After that is done, the cpu and dealer will do the same until the dealer has a hand greater or equal to 17\n"
+				+ "To win, you must have a greater value than the dealer but not exceed 21 or have a lower value than the dealer"
+				+ "when the dealer has a value over 21\nIf you have a jack and an ace as your only two cards you have blackjack!\n\n"
 				+ "Here are the following payouts:\n"
-				+ "BlackJack = Your Bet multiplied by 3\n"
-				+ "Beating the dealer = Your Bet multiplied by 2\n"
-				+ "Losing to the dealer = 0");
+				+ "BlackJack pays 3:1\n"
+				+ "Beating the dealer pays 2:1\n"
+				+ "Losing costs the bet amount");
 		
 	}
 
