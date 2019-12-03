@@ -1,5 +1,5 @@
 package cp317;
-
+//import desired classes
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -44,7 +44,7 @@ public class RouletteMain {
 	
 	JLabel info = new JLabel("Enter a bet");
 	JLabel playerMoney = new JLabel("");
-	
+	//create buttons
 	JButton enterBet = new JButton("Enter");
 	JButton betDown = new JButton("-");
 	JButton betUp = new JButton("+");
@@ -67,7 +67,7 @@ public class RouletteMain {
 	JFrame frame = new JFrame("Roulette");
 	JFrame menuFrame;
 	Player plyr;
-	
+	//important varaibles for game logic
 	int num1 = 0;
 	int num2 = 0;
 	int actualNum = 0;
@@ -103,7 +103,7 @@ public class RouletteMain {
 		panel.setLayout(null);
 		
 		playerMoney.setText(plyr.getID() + ": $" + plyr.getMoney());
-		
+		//set fonts for labels and buttons
 		info.setFont(new Font("Serif", Font.PLAIN, 40));
 		playerMoney.setFont(new Font("Serif", Font.PLAIN, 40));
 		middle.setFont(new Font("Serif", Font.BOLD, 30));
@@ -125,6 +125,7 @@ public class RouletteMain {
 		playerMoney.setHorizontalAlignment(JTextField.CENTER);
 		betText.setHorizontalAlignment(JTextField.CENTER);
 		
+		//set the colors for the buttons and images for back drop
 		middle.setBackground(Color.BLACK);
 		middle.setText("" + 1);
 		info.setForeground(Color.white);
@@ -142,7 +143,7 @@ public class RouletteMain {
 		betDown.setBackground(gold);
 		//betText.setBackground(gold);
 		spinner.setBackground(gold);
-		
+		//set the bounds off all buttons and labels
 		enterBet.setBounds(200, 0, 200, 150);
 		betText.setBounds(400, 0, 400, 150);
 		betUp.setBounds(800, 0, 200, 150);
@@ -162,7 +163,7 @@ public class RouletteMain {
 		endGame.setBounds(0, 0, 200, 150);
 		rules.setBounds(1200, 0, 200, 150);
 		playerMoney.setBounds(350, 470, 700, 300);
-		
+		// add everything to the panel
 		panel.add(betText);
 		panel.add(enterBet);
 		panel.add(betDown);
@@ -183,6 +184,7 @@ public class RouletteMain {
 		panel.add(rules);
 		panel.add(playerMoney);
 		
+		//disable all buttons until bet is placed
 		left2.setEnabled(false);
 		left1.setEnabled(false);
 		middle.setEnabled(false);
@@ -211,6 +213,7 @@ public class RouletteMain {
 	}
 	
 	public void Listeners() {
+		//add action listeners
 		enterBet.addActionListener(new betEntered());
 		endGame.addActionListener(new goBack());
 		red.addActionListener(new setRed());
@@ -394,7 +397,7 @@ private class lowerBet implements ActionListener {
 					while (enterNum.isEnabled()) {
 						info.setText("Pick a colour, number, even or odd");
 					}
-					
+					//simulate movement 
 					while (counter < 20) {
 						actualNum = rand.nextInt(36);
 						if (actualNum == 0) {
@@ -422,6 +425,7 @@ private class lowerBet implements ActionListener {
 					}
 					
 					try {
+						//payouts or lose
 						PrintWriter pw = new PrintWriter(new FileOutputStream(file, true));
 						String temp = "" + actualNum;
 						if (bet.equals("Red") && actualNum % 2 == 0) {
@@ -470,7 +474,7 @@ private class lowerBet implements ActionListener {
 					catch (Exception e) {
 						e.printStackTrace();
 					}
-					
+					//disable bets enable betting
 					counter = 0;
 					red.setEnabled(false);
 					black.setEnabled(false);
