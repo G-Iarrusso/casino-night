@@ -10,6 +10,7 @@ Prerequisites
 Minimum resolution 1400 X 900 
 Proper IO devices
 Java installed on machine, game will prompt users to download java if they do not have it
+Must have working Windows OS, application will not work on MAC OS
 
 Installing
 
