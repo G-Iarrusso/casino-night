@@ -29,7 +29,7 @@ public class MainMenu {
     	
     	//Creates the background Image
     	ImageIcon icon = new ImageIcon("Blackjack_Images/Casino.jpg");
-    	Image iconTemp = icon.getImage().getScaledInstance(900, 900, Image.SCALE_DEFAULT);
+    	Image iconTemp = icon.getImage().getScaledInstance(1000, 900, Image.SCALE_DEFAULT);
     	ImageIcon background = new ImageIcon(iconTemp);
     	
     	JLabel contentPane = new JLabel();
@@ -69,7 +69,7 @@ public class MainMenu {
 	JTextField text = new JTextField(10);
 	Player puser;
 	Color c = new Color(200,150,15);
-	
+	Color d = new Color(170,170,170);
 	
 	//Declare global variables
 	boolean newUser = false;
@@ -153,7 +153,7 @@ public class MainMenu {
 		rec10.setBounds(460, 700, 400, 50);
 		
 		//Change the colour of the text in the button and the background of the button
-		name.setForeground(Color.ORANGE);
+		name.setForeground(Color.white);
 		response.setForeground(Color.white);
 		rec1.setForeground(Color.white);
 		rec1.setBackground(Color.black);
@@ -778,7 +778,8 @@ public class MainMenu {
 			catch (Exception e1) {
 				System.out.println("File IO error");
 			}
-			response.setForeground(c);
+			
+			response.setForeground(Color.white);
 		}
 	}
 }
