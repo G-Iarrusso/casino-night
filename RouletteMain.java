@@ -15,7 +15,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
-import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,12 +31,12 @@ import javax.swing.WindowConstants;
 
 public class RouletteMain {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		RouletteMain r = new RouletteMain();
 		Player p = new Player("Christine", 10);
 		JFrame n = new JFrame();
 		r.Startup(p, n, 10);
-	}
+	}*/
 	SpinnerModel model = new SpinnerNumberModel(0,0,36,1);
 	JSpinner spinner = new JSpinner(model);
 	File file = new File("user_records.txt");
@@ -431,31 +430,31 @@ private class lowerBet implements ActionListener {
 						if (bet.equals("Red") && actualNum % 2 == 0) {
 							info.setText("Congratulations you won $" + betting.getBet() * 2 + "!");
 							plyr.changeMoney(betting.getBet() * 2);
-							pw.append("Won $" + betting.getBet() * 2 + " playing Roulette");
+							pw.append("Won $" + betting.getBet() * 2 + " playing Roulette\n");
 						}
 						else if (bet.equals("Black") && actualNum % 2 == 1) {
 							info.setText("Congratulations you won $" + betting.getBet() * 2 + "!");
 							plyr.changeMoney(betting.getBet() * 2);
-							pw.append("Won $" + betting.getBet() * 2 + " playing Roulette");
+							pw.append("Won $" + betting.getBet() * 2 + " playing Roulette\n");
 						}
 						else if (bet.equals("Even") && actualNum % 2 == 0) {
 							info.setText("Congratulations you won $" + betting.getBet() * 2 + "!");
 							plyr.changeMoney(betting.getBet() * 2);
-							pw.append("Won $" + betting.getBet() * 2 + " playing Roulette");
+							pw.append("Won $" + betting.getBet() * 2 + " playing Roulette\n");
 						}
 						else if (bet.equals("Odd") && actualNum % 2 == 1) {
 							info.setText("Congratulations you won $" + betting.getBet() * 2 + "!");
 							plyr.changeMoney(betting.getBet() * 2);
-							pw.append("Won $" + betting.getBet() * 2 + " playing Roulette");
+							pw.append("Won $" + betting.getBet() * 2 + " playing Roulette\n");
 						}
 						else if (bet.equals(temp)) {
 							info.setText("Congratulations you won $" + betting.getBet() * 36 + "!");
 							plyr.changeMoney(betting.getBet() * 36);
-							pw.append("Won $" + betting.getBet() * 36 + " playing Roulette");
+							pw.append("Won $" + betting.getBet() * 36 + " playing Roulette\n");
 						}
 						else {
 							info.setText("You lost $" + betting.getBet());
-							pw.append("Lost $" + betting.getBet() + " playing Roulette");
+							pw.append("Lost $" + betting.getBet() + " playing Roulette\n");
 						}
 						pw.close();
 					}
@@ -488,7 +487,8 @@ private class lowerBet implements ActionListener {
 					betUp.setEnabled(true);
 					betDown.setEnabled(true);
 					playerMoney.setText(plyr.getID() + ": $" + plyr.getMoney());
-					
+					betting.clearBet();
+					betText.setText("$"+betting.getBet());
 					if (plyr.getMoney() == 0) {
 						done = true;
 						menuFrame.setVisible(true);

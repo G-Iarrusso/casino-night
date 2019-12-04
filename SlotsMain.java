@@ -2,7 +2,6 @@ package cp317;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -16,21 +15,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.swing.*;
 
 public class SlotsMain
 {
 //used to run the game for testing 
-	public static void main(String args[])
+	/*public static void main(String args[])
 	{
 		SlotsMain s = new SlotsMain();
 		Player p = new Player("Matt", 5);
 		JFrame n = new JFrame();
 		int numrecords = 0;
 		s.StartupSlots(p, n, numrecords);
-	}
+	}*/
 
 	// creating labels
 	Color gold = new Color(200,150,15);
@@ -173,7 +170,7 @@ public class SlotsMain
 		earning.setBounds(600, 145, 300, 100);
 		earning.setFont(new Font("Serif", Font.PLAIN, 30));
 
-		money.setText("Money: $"+plyr.getMoney());
+		money.setText("Money: $ "+plyr.getMoney());
 		
 		Cherry.setBounds(1200, 200, 100, 100);
 		Coin.setBounds(1200, 300, 100, 100);

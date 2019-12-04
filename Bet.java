@@ -40,6 +40,10 @@ public class Bet {
 		}
 		
 	}
+	void clearBet() {
+		index = 0;
+		betVal = values[index];
+	}
 	
 	void lowerBet() {
 		if (index - 1 >= 0) {

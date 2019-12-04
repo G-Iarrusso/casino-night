@@ -22,12 +22,12 @@ import javax.swing.*;
 
 public class BlackJackMain {
 	
-	public static void main(String args[]) {
+	/*public static void main(String args[]) {
 		BlackJackMain b = new BlackJackMain();
 		Player p = new Player("Matt", 10);
 		JFrame n = new JFrame();
 		b.Startup(p, n, 10);
-	}
+	}*/
 	
 	//Create labels
 	JLabel back = new JLabel("");
@@ -1270,6 +1270,8 @@ public class BlackJackMain {
 								winLoss.setForeground(Color.GREEN);
 								message.setText("You beat the Dealer");
 							}
+							betting.clearBet();
+							input.setText("$"+betting.getBet());
 							numRecords++;
 							winLoss.setVisible(true);
 							message.setVisible(true);

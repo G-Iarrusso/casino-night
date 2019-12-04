@@ -89,7 +89,7 @@ public class CrapsMain
 		//update faces of dice
 		face1(die_1);
 		face2(die_2);
-		//record outcoem to file
+		//record outcome to file
 		try {
 			pw = new PrintWriter(new FileOutputStream(file, true));
 			//check if a prop has been placed
