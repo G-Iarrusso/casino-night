@@ -639,10 +639,6 @@ public class CrapsMain
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// end the game, if mid game and return to main menu
-			if (target != 0)
-			{
-				ply.changeMoney(-bets[index]);
-			}
 			home.setVisible(true);
 			frame.dispose();
 		}
