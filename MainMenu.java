@@ -778,7 +778,7 @@ public class MainMenu {
 			catch (Exception e1) {
 				System.out.println("File IO error");
 			}
-			response.setForeground(Color.c);
+			response.setForeground(c);
 		}
 	}
 }
