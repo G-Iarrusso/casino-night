@@ -83,9 +83,9 @@ public class SlotsMain
 	
 	//creating the buttons used in the GUI
 
-	JButton leftslot = new JButton();
-	JButton middleslot = new JButton();
-	JButton rightslot = new JButton();
+	JLabel leftslot = new JLabel();
+	JLabel middleslot = new JLabel();
+	JLabel rightslot = new JLabel();
 	Player plyr;
 	JFrame menuFrame;
 	// buttons
@@ -160,13 +160,13 @@ public class SlotsMain
 		rules.setBounds(1200, 0, 200, 100);
 		rules.setFont(new Font("Serif", Font.PLAIN, 30));
 		rules.setBackground(gold);
-		spin.setBounds(870, 270, 100, 230);
+		spin.setBounds(870, 250, 100, 230);
 		spin.setFont(new Font("Serif", Font.PLAIN, 30));
 		spin.setOpaque(false);
 		spin.setContentAreaFilled(false);
 		spin.setBorderPainted(false);
-		
-		money.setBounds(600, 780, 400, 100);
+		//780
+		money.setBounds(600, 580, 400, 100);
 		money.setFont(new Font("Serif", Font.PLAIN, 30));
 		earning.setAlignmentX(JTextField.CENTER);
 		earning.setForeground(Color.yellow);
@@ -259,6 +259,7 @@ public class SlotsMain
 		
 			//removing $5 from the player to spin the slot.
 			plyr.changeMoney(-5);
+			money.setText("Money: $"+plyr.getMoney());
 			if (plyr.getMoney() < 5) {
 				flag = true;
 			}
@@ -586,7 +587,7 @@ public class SlotsMain
 					earning.setText("Payout: $" + payout);
 					money.setText("Money: $ " + plyr.getMoney());
 					//re enabled the button for use
-					//force the user to leave if they dont have enough money to play
+					System.out.println(plyr.getMoney());
 					if(flag)
 					{
 						frame.dispose();
